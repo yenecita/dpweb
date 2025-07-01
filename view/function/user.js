@@ -47,4 +47,3 @@ async function registrarUsuario() {
         console.log("Error al registrar Usuario:"+ e);
     }
 }
-
