@@ -55,6 +55,7 @@
             </div>
         </div>
     </nav>
+    <!-- INICIO DE CUERPO DE PAGINA -->
     <div class="container-fluid">
         <div class="card">
             <h5 class="card-header">REGISTRO DE CATEGORÍA</h5>
@@ -78,6 +79,7 @@
             </form>
         </div>
     </div>
+    <!-- FIN DE CUERPO DE PAGINA -->
 </body>
 <script src="<?php echo BASE_URL; ?>view/function/categoria.js"></script>
 <script src="<?php echo BASE_URL; ?>view/bootstrap/js/bootstrap.bundle.js"></script>
