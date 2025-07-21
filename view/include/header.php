@@ -23,6 +23,9 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="#">Home</a>
                     </li>
+                     <li class="nav-item">
+                        <a class="nav-link" href="<?php echo BASE_URL; ?>users">users</a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">products</a>
                     </li>
@@ -32,11 +35,12 @@
                     <a class="nav-link" href="#">shopping</a>
                     </li>
                     <a class="nav-link" href="#">categorias</a>
+                
+                    </li>
+                    <a class="nav-link" href="#">clients</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Dropdown
-                        </a>
+                        
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="#">Action</a>
                             </li>

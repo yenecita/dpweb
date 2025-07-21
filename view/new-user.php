@@ -18,7 +18,7 @@
                     <div class="mb-3 row">
                         <label for="razon_social" class="col-sm-4 col-form-label">razon_social :</label>
                         <div class="col-sm-8">
-                            <input type="texto" class="form-control" id="razon_social" name="razon_social" require>
+                            <input type="text" class="form-control" id="razon_social" name="razon_social" required>
                         </div>
                     </div>
                 </div>
@@ -26,7 +26,7 @@
                     <div class="mb-3 row">
                         <label for="telefono" class="col-sm-4 col-form-label">telefono:</label>
                         <div class="col-sm-8">
-                            <input type="number" class="form-control" id="telefono" name="telefono" require>
+                            <input type="number" class="form-control" id="telefono" name="telefono" required>
                         </div>
                     </div>
                 </div>
@@ -34,7 +34,7 @@
                     <div class="mb-3 row">
                         <label for="correo" class="col-sm-4 col-form-label">correo:</label>
                         <div class="col-sm-8">
-                            <input type="email" class="form-control" id="correo" name="correo" require>
+                            <input type="email" class="form-control" id="correo" name="correo" required>
                         </div>
                     </div>
                 </div>
@@ -42,7 +42,7 @@
                     <div class="mb-3 row">
                         <label for="departamento" class="col-sm-4 col-form-label">departamento:</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="departamento" name="departamento" require>
+                            <input type="text" class="form-control" id="departamento" name="departamento" required>
                         </div>
                     </div>
                 </div>
@@ -50,7 +50,7 @@
                     <div class="mb-3 row">
                         <label for="provincia" class="col-sm-4 col-form-label">provincia:</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="provincia" name="provincia" require>
+                            <input type="text" class="form-control" id="provincia" name="provincia" required>
                         </div>
                     </div>
                 </div>
@@ -74,7 +74,7 @@
                     <div class="mb-3 row">
                         <label for="direccion" class="col-sm-4 col-form-label">direccion:</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="direccion" name="direccion" require>
+                            <input type="text" class="form-control" id="direccion" name="direccion" required>
                         </div>
                     </div>
                 </div>
@@ -82,7 +82,7 @@
                     <div class="mb-3 row">
                         <label for="rol" class="col-sm-4 col-form-label">rol:</label>
                         <div class="col-sm-8">
-                            <select class="form-control" name="rol" id="rol" require>
+                            <select class="form-control" name="rol" id="rol" required>
                                 <option value="" disable selected>Seleccione</option>
                                 <option value="vendedor">vendedor</option>
                                 <option value="administrador">administrador</option>

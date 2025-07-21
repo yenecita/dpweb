@@ -25,11 +25,11 @@ if ($tipo == "registrar") {
         //validacion si existe persona con la mismo dni.
         $existePersona = $objPersona->existePersona($nro_identidad);
         if ($existePersona > 0) {
-            $arrResponse = array('status' => false, 'mdg' => 'Error, nro de documento ya existe');
+            $arrResponse = array('status' => false, 'msg' => 'Error, nro de documento ya existe');
         } else {
             $respuesta = $objPersona->registrar($nro_identidad, $razon_social, $telefono, $correo, $departamento, $provincia, $distrito, $cod_postal, $direccion, $rol, $password);
             if ($respuesta) {
-                $arrResponse = array('status' => true, 'mdg' => 'Registrar Correctamente');
+                $arrResponse = array('status' => true, 'msg' => 'Registrar Correctamente');
             } else {
                 $arrResponse = array('status' => false, 'msg' => 'Error,falló en registro');
             }
@@ -37,3 +37,34 @@ if ($tipo == "registrar") {
     }
     echo json_encode($arrResponse);
 }
+if ($tipo == "iniciar_sesion") {
+    $nro_identidad = $_POST['text'];
+    $password = $_POST['password'];
+    if ($nro_identidad == "" || $password == "") {
+        $respuesta = array('status' => false, 'msg' => 'Error, Campos vacios');
+    } else {
+        $existePersona = $objPersona->existePersona($nro_identidad);
+        if (!$existePersona) {
+            $respuesta = array('status' => false, 'msg' => 'Error, Usuario no registrado');
+        } else {
+            $persona = $objPersona->buscarPersonaPorNroIdentidad($nro_identidad);
+            if (password_verify($password, $persona->password)) {
+                //inicio de sesión y tambien eliminar
+                session_start(); 
+                //crear una variable de sesión
+                $_SESSION['ventas_id'] = $persona->id;
+                $_SESSION['ventas_usuario'] = $persona->razon_social;
+                $respuesta = array('status' => true, 'msg' => 'ok');
+            }else{
+               $respuesta = array('status' => false, 'msg' => 'Error, contraseña encorrecta'); 
+            }
+        }
+    }
+    echo json_encode($respuesta);
+
+}
+if($tipo == "ver_usuarios") {
+    $usuarios =$objPersona->verUsuarios();
+    echo json_encode($usuarios);
+}
+ 
