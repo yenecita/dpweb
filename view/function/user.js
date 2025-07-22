@@ -100,8 +100,11 @@ async function view_users() {
                     <td>${user.correo || ''}</td>
                     <td>${user.rol || ''}</td>
                     <td>${user.estado || ''}</td>
-                </tr>`;////Usa || '' para evitar errores si algún campo viene vacío o indefinido.
-
+                    <td>
+                       <a href="`+ base_url+`edit_user/`+ user.id +`">Editar</a>
+                    </td>
+                </tr>
+                `;//Usa || '' para evitar errores si algún campo viene vacío o indefinido.
             });
             //Inserta todas las filas generadas dentro del elemento con id="content_users".
             document.getElementById('content_users').innerHTML = html;
@@ -109,13 +112,13 @@ async function view_users() {
             //Si no hay usuarios, muestra una fila con el mensaje “No hay usuarios disponibles”.
             document.getElementById('content_users').innerHTML = '<tr><td colspan="6">No hay usuarios disponibles</td></tr>';
         }
-        //Si ocurre un error (por ejemplo, conexión fallida), muestra una fila con el mensaje de error.
+        //muestra una fila con el mensaje de error.
     } catch (error) {
         console.log(error);
         document.getElementById('content_users').innerHTML = '<tr><td colspan="6">Error al cargar los usuarios</td></tr>';
     }
 }
-//Cuando el HTML tiene el elemento #content_users, se llama a la función view_users() automáticamente.
+// se llama a la función view_users() automáticamente.
 if (document.getElementById('content_users')) {
     view_users();
 }
