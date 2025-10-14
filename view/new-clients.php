@@ -2,10 +2,10 @@
     <!-- INICIO DE CUERPO DE PAGINA -->
     <div class="container-fluid">
         <div class="card">
-            <h5 class="card-header">REGISTRO DE USUARIO
+            <h5 class="card-header">REGISTRO DE CLIENTES
 
             </h5>
-            <form id="frm_user" action="" method="">
+            <form id="frm_clients" action="" method="POST" enctype="multipart/form-data">
                 <div class="card-body">
                     <div class="mb-3 row">
                         <label for="nro_identidad" class="col-sm-4 col-form-label">nro_identidad:</label>
@@ -82,19 +82,27 @@
                     <div class="mb-3 row">
                         <label for="rol" class="col-sm-4 col-form-label">rol:</label>
                         <div class="col-sm-8">
-                            <select class="form-control" name="rol" id="rol" required>
-                                <option value="" disable selected>Seleccione</option>
-                                <option value="vendedor">vendedor</option>
-                                <option value="administrador">administrador</option>
+                            <select class="form-control" name="rol" id="rol" required readonly>
+                                <option value="cliente">cliente</option>
                             </select>
                         </div>
                     </div>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3 row">
+                        <label for="editor" class="col-sm-4 col-form-label">editor:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="editor" name="editor">
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
                     <button type="submit" class="btn btn-success">Registrar</button>
                     <button type="reset" class="btn btn-info">Limpiar</button>
                     <button type="button" class="btn btn-danger">Cancelar</button>
+                </div>
             </form>
         </div>
     </div>
     <!-- FIN DE CUERPO DE PAGINA -->
-
-<script src="<?php echo BASE_URL; ?>view/function/user.js"></script>
+<script src="<?php echo BASE_URL; ?>view/function/clients.js"></script>

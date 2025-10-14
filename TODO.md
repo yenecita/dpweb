@@ -1,0 +1,12 @@
+- Fix JavaScript bugs in view/function/clients.js: correct element IDs ('content_client' instead of 'content_clients'), fix error messages, and ensure view_client() populates the correct table. ✓
+- Update model/UsuarioModel.php: add 'editor' field to registrar, actualizar methods. ✓
+- Update control/UsuarioController.php: add 'editor' handling in registrar, actualizar. ✓
+- Update view/clients.php: add "Editor" column to the table header. ✓
+- Update view/edit-clients.php: add "Editor" field to the form. ✓
+- Update view/new-clients.php: add "Editor" field to the form. ✓
+- Update view/function/clients.js: add 'editor' to validation, form population, and data submission; fix view_client() to include 'editor' in HTML. ✓
+- Fixed typo in edit-clients.php script call from 'dit_client()' to 'edit_client()'. ✓
+- Updated UsuarioModel.php to handle NULL for editor in INSERT and UPDATE queries. ✓
+- Fixed indentation in UsuarioController.php for editor handling. ✓
+- Made the "Editor" column clickable to link to the edit form. ✓
+- Test the list loading and edit functionality.

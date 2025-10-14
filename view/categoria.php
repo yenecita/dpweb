@@ -17,9 +17,9 @@
     <div class="container-fluid">
         <div class="card">
             <h5 class="card-header">REGISTRO DE CATEGORÍA</h5>
-            <form id="frm_categoria" action="" method="">
+            <form id="frm_categoria" action="" method="POST" enctype="multipart/form-data">
                 <div class="card-body">
-                    <div class="mb-3 row"><label class="col-sm-4 col-form-label">$nombre:</label>
+                    <div class="mb-3 row"><label class="col-sm-4 col-form-label">nombre:</label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control" id="nombre" name="nombre" required>
                         </div>

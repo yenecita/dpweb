@@ -1,6 +1,4 @@
-// Validación y envío del formulario de usuario
 function validar_form(tipo) {
-    // Obtener todos los campos
     let nro_identidad = document.getElementById("nro_identidad").value;
     let razon_social = document.getElementById("razon_social").value;
     let telefono = document.getElementById("telefono").value;
@@ -14,37 +12,38 @@ function validar_form(tipo) {
 
     if (nro_identidad == "" || razon_social == "" || telefono == "" || correo == "" || departamento == "" || provincia == "" || distrito == "" || cod_postal == "" || direccion == "" || rol == "") {
         Swal.fire({
-            title: "Drag me!",
-            icon: "success",
+            title: "Error de Validación",
+            text: "Todos los campos obligatorios deben estar llenos.",
+            icon: "error",
             draggable: true
         });
         return;
     }
-    if (tipo == "nuevo") {
-        registrarUsuario();
 
+    if (tipo == "nuevo") {
+        registrarCliente();
     }
     if (tipo == "actualizar") {
-        actualizarUsuario();
-
+        actualizarCliente();
     }
-
 }
 
-// Evento submit para frm_user
-if (document.querySelector('#frm_user')) {
-    // evita que se envie el formulario
-    let frm_user = document.querySelector('#frm_user');
-    frm_user.onsubmit = function (e) {
+// Evento submit para frm_clients
+if (document.querySelector('#frm_clients')) {
+    let frm_clients = document.querySelector('#frm_clients');
+    frm_clients.onsubmit = function (e) {
         e.preventDefault();
         validar_form("nuevo");
     }
 }
-// Función para registrar usuario
-async function registrarUsuario() {
+
+
+//Función para registrar un nuevo cliente.
+
+async function registrarCliente() {
     try {
         //capturaran campos de formulario (HTML)
-        const datos = new FormData(frm_user);
+        const datos = new FormData(frm_clients);
         //enviar datos al controlador
         let respuesta = await fetch(base_url + 'control/UsuarioController.php?tipo=registrar', {
             method: 'POST',
@@ -56,98 +55,61 @@ async function registrarUsuario() {
         //validamos que json.status sea = true
         if (json.status) {
             alert(json.msg);
-            document.getElementById('frm_user').reset(); // Limpia el formulario
+            document.getElementById('frm_clients').reset(); // Limpia el formulario
         } else {
             alert(json.msg);
         }
     } catch (e) {
-        console.log("Error al registrar Usuario:" + e);
+        console.log("Error al registrar Cliente:" + e);
     }
 
 }
-
-async function iniciar_sesion() {
-    let usuario = document.getElementById("username").value;
-    let password = document.getElementById("password").value;
-    if (usuario == "" || password == "") {
-
-        //alert("Error, campos vacios!")
-        Swal.fire({
-            icon: "error",
-            title: "Error, campos vacios!"
-
-        });
-        return;
-    }
+async function view_client() {
     try {
-        const datos = new FormData(frm_login);
-        let respuesta = await fetch(base_url + 'control/UsuarioController.php?tipo=iniciar_sesion', {
-            method: 'POST',
-            mode: 'cors',
-            cache: 'no-cache',
-            body: datos
-        });
-
-        let json = await respuesta.json();
-        //validamos  que json.status sea 0 True
-        if (json.status) {
-            location.replace(base_url + 'new-user');
-
-        } else {
-            alert(json.msg);
-        }
-
-    } catch (error) {
-        console.log(error);
-
-    }
-
-}
-
-
-async function view_users() {
-    try {
-        let respuesta = await fetch(base_url + 'control/UsuarioController.php?tipo=ver_usuarios', {
+        let respuesta = await fetch(base_url + 'control/UsuarioController.php?tipo=ver_client', {
             method: 'POST',
             mode: 'cors',
             cache: 'no-cache'
         });
 
         let json = await respuesta.json();
+        let contentTable = document.getElementById('content_client');
+
         if (json && json.status && json.data && json.data.length > 0) {
             let html = '';
-            json.data.forEach((user, index) => {
+            json.data.forEach((client, index) => {
                 html += `<tr>
                     <td>${index + 1}</td>
-                    <td>${user.nro_identidad || ''}</td>
-                    <td>${user.razon_social || ''}</td>
-                    <td>${user.correo || ''}</td>
-                    <td>${user.rol || ''}</td>
-                    <td><a href="${base_url}edit-user/${user.id}" style="text-decoration: none; color: inherit;">${user.editor || ''}</a></td>
+                    <td>${client.nro_identidad || ''}</td>
+                    <td>${client.razon_social || ''}</td>
+                    <td>${client.correo || ''}</td>
+                    <td>${client.rol || ''}</td>
+                    <td><a href="${base_url}edit-clients/${client.id}" style="text-decoration: none; color: inherit;">${client.editor || ''}</a></td>
                     <td>Activo</td>
-                      <td>
-                      <a href="${base_url}edit-user/${user.id}" class="btn btn-primary btn-sm">Editar</a>
-                      <button onclick="btn_eliminar(${user.id});" class="btn btn-danger btn-sm">Eliminar</button>
-                      </td>
-                     </tr>`;
+                    <td>
+                        <a href="${base_url}edit-clients/${client.id}" class="btn btn-primary btn-sm">Editar</a>
+                        <button onclick="btn_eliminar(${client.id});" class="btn btn-danger btn-sm">Eliminar</button>
+                    </td>
+                </tr>`;
             });
-            document.getElementById('content_users').innerHTML = html;
+            contentTable.innerHTML = html;
         } else {
-            document.getElementById('content_users').innerHTML = '<tr><td colspan="7">No hay usuarios disponibles</td></tr>';
+            contentTable.innerHTML = '<tr><td colspan="8">No hay clientes disponibles</td></tr>';
         }
     } catch (error) {
-        console.log("Error al obtener usuarios:", error);
-        document.getElementById('content_users').innerHTML = '<tr><td colspan="7">Error al cargar los usuarios</td></tr>';
+        console.log("Error al obtener clients:", error);
+        contentTable.innerHTML = '<tr><td colspan="8">Error al cargar los clientes</td></tr>';
     }
 }
 
-if (document.getElementById('content_users')) {
-    view_users();
+// Inicializar la vista de clientes si el elemento existe (para la tabla de clientes)
+if (document.getElementById('content_client')) {
+    view_client();
 }
 
-async function edit_user() {
+async function edit_client() {
     try {
-        // Obtener el ID del usuario desde la URL
+        // Obtener el ID del cliente desde la URL
         let url = window.location.href;
         let parts = url.split('/');
         let id_persona = parts[parts.length - 1];
@@ -160,8 +122,8 @@ async function edit_user() {
             mode: 'cors',
             cache: 'no-cache',
             body: datos
-
         });
+
         json = await respuesta.json();
         if (!json.status) {
             alert(json.msg);
@@ -178,45 +140,44 @@ async function edit_user() {
         document.getElementById('direccion').value = json.data.direccion;
         document.getElementById('rol').value = json.data.rol;
 
-
     } catch (error) {
-        console.log('oops, ucurrió un error' + error);
+        console.log('Error al editar cliente:' + error);
     }
-
 }
-if (document.querySelector('#frm_edit_user')) {
-    //evita que se envie el formulario
-    let frm_user = document.querySelector('#frm_edit_user');
-    frm_user.onsubmit = function (e) {
+
+// Evento submit para frm_edit_client
+if (document.querySelector('#frm_edit_client')) {
+    let frm_client = document.querySelector('#frm_edit_client');
+    frm_client.onsubmit = function (e) {
         e.preventDefault();
         validar_form("actualizar");
     }
 }
-
-async function actualizarUsuario() {
-    const datos = new FormData(frm_edit_user);
+async function actualizarCliente() {
+    const datos = new FormData(frm_edit_client);
     let respuesta = await fetch(base_url + 'control/UsuarioController.php?tipo=actualizar', {
         method: 'POST',
         mode: 'cors',
         cache: 'no-cache',
         body: datos
     });
-    json = await respuesta.json();
+
+    let json = await respuesta.json();
     if (!json.status) {
-        alert("Oooops, ocurrio un error al actualizar, intentelo nuevamente");
+        alert("Oooops, ocurrió un error al actualizar el cliente, intentelo nuevamente");
         console.log(json.msg);
         return;
     } else {
         alert(json.msg);
     }
-} 
+}
 async function btn_eliminar(id) {
-    if (window.confirm("¿Estás seguro de eliminar este usuario?")) {
-        eliminarUsuario(id);
+    if (window.confirm("¿Estás seguro de eliminar este cliente?")) {
+        eliminarCliente(id);
     }
 }
 
-async function eliminarUsuario(id) {
+async function eliminarCliente(id) {
     try {
         const datos = new FormData();
         datos.append('id_persona', id);
@@ -232,12 +193,11 @@ async function eliminarUsuario(id) {
 
         if (json.status) {
             alert(json.msg);
-            view_users(); // refresca la tabla
+            view_client(); // refresca la tabla
         } else {
             alert(json.msg);
         }
     } catch (error) {
-        console.log("Error al eliminar usuario: " + error);
+        console.log("Error al eliminar cliente: " + error);
     }
 }
-
