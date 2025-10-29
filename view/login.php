@@ -97,7 +97,7 @@ body {
     <div class="login-box">
       <img src="https://img.freepik.com/fotos-premium/hermosa-mujer-morena-pelo-largo-modelo-mujer-peinado-belleza-tiro-estudio-blanco-aislado_431835-4167.jpg?semt=ais_hybrid&w=740" alt="foto de perfil" height="80" width="80" />
 
-      <input type="text" placeholder="text" id="text" name="text" required />
+      <input type="text" placeholder="usuario" id="username" name="username" required />
       <input type="password" placeholder="password" id="password" name="password" required />
 
       <div class="remember">

@@ -16,6 +16,10 @@ class viewsControl extends viewModel
             if (isset($_GET["views"])) {
                 $ruta = explode("/", $_GET["views"]);
                 $response = viewModel::get_view($ruta[0]);
+                // Pasar el ID si existe en la ruta
+                if (isset($ruta[1])) {
+                    $_GET['id'] = $ruta[1];
+                }
             } else {
                 $response = "index.php";
             }

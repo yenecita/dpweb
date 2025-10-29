@@ -1,9 +1,10 @@
-<?php
+ <?php
 require_once("../model/UsuarioModel.php");
 
 $objPersona = new UsuarioModel();
 
 $tipo = $_GET['tipo'];
+
 if ($tipo == "registrar") {
     //print_r($_POST);
     $nro_identidad = $_POST['nro_identidad'];
@@ -16,10 +17,11 @@ if ($tipo == "registrar") {
     $cod_postal = $_POST['cod_postal'];
     $direccion = $_POST['direccion'];
     $rol = $_POST['rol'];
+    $estado = $_POST['estado'];
     //ENCRIPTANDO nro_intidad PARA UTILIZAR COMO CONTRSEÑA
     $password = password_hash($nro_identidad, PASSWORD_DEFAULT);
 
-    if ($nro_identidad == "" || $razon_social == "" || $telefono == "" || $correo == "" || $departamento == "" || $provincia == "" || $distrito == "" || $cod_postal == "" || $direccion  == "" || $rol == "") {
+    if ($nro_identidad == "" || $razon_social == "" || $telefono == "" || $correo == "" || $departamento == "" || $provincia == "" || $distrito == "" || $cod_postal == "" || $direccion  == "" || $rol == "" || $estado == "") {
         $arrResponse = array('status' => false, 'msg' => 'Error, campos vacios');
     } else {
         //validacion si existe persona con la mismo dni.
@@ -27,7 +29,7 @@ if ($tipo == "registrar") {
         if ($existePersona > 0) {
             $arrResponse = array('status' => false, 'msg' => 'Error, nro de documento ya existe');
         } else {
-            $respuesta = $objPersona->registrar($nro_identidad, $razon_social, $telefono, $correo, $departamento, $provincia, $distrito, $cod_postal, $direccion, $rol, $password);
+            $respuesta = $objPersona->registrar($nro_identidad, $razon_social, $telefono, $correo, $departamento, $provincia, $distrito, $cod_postal, $direccion, $rol, $password, $estado);
             if ($respuesta) {
                 $arrResponse = array('status' => true, 'msg' => 'Registrar Correctamente');
             } else {
@@ -37,8 +39,9 @@ if ($tipo == "registrar") {
     }
     echo json_encode($arrResponse);
 }
+
 if ($tipo == "iniciar_sesion") {
-    $nro_identidad = $_POST['text'];
+    $nro_identidad = $_POST['username'];
     $password = $_POST['password'];
     if ($nro_identidad == "" || $password == "") {
         $respuesta = array('status' => false, 'msg' => 'Error, Campos vacios');
@@ -50,21 +53,161 @@ if ($tipo == "iniciar_sesion") {
             $persona = $objPersona->buscarPersonaPorNroIdentidad($nro_identidad);
             if (password_verify($password, $persona->password)) {
                 //inicio de sesión y tambien eliminar
-                session_start(); 
+                session_start();
                 //crear una variable de sesión
                 $_SESSION['ventas_id'] = $persona->id;
                 $_SESSION['ventas_usuario'] = $persona->razon_social;
                 $respuesta = array('status' => true, 'msg' => 'ok');
-            }else{
-               $respuesta = array('status' => false, 'msg' => 'Error, contraseña encorrecta'); 
+            } else {
+                $respuesta = array('status' => false, 'msg' => 'Error, contraseña encorrecta');
             }
         }
     }
     echo json_encode($respuesta);
+}
 
+if ($tipo == "ver_usuarios") {
+    $respuesta = array('status' => false, 'msg' => 'fallo el controlador');
+    $usuarios = $objPersona->verUsuarios();
+    if (count($usuarios)) {
+        $respuesta = array('status' => true, 'msg' => '', 'data' => $usuarios);
+    }
+    echo json_encode($respuesta);
 }
-if($tipo == "ver_usuarios") {
-    $usuarios =$objPersona->verUsuarios();
-    echo json_encode($usuarios);
+if ($tipo == "listar_proveedores"){
+    $respuesta = array('status' => false, 'msg' => 'fallo en controlador');
+    $usuarios = $objPersona->verProveedor();
+    if (count($usuarios)) {
+        $respuesta = array('status' => true, 'msg' => '', 'data' => $usuarios);
+    }
+    echo json_encode($respuesta);
 }
- 
+
+if ($tipo == "ver_proveedor") {
+    $id_persona = $_POST['id_persona'];
+    $respuesta = array('status' => false, 'msg' => 'Error');
+    $proveedor = $objPersona->ver($id_persona);
+    if ($proveedor) {
+        $respuesta['status'] = true;
+        $respuesta['data'] = $proveedor;
+    } else {
+        $respuesta['msg'] = 'Error, proveedor no existe';
+    }
+    echo json_encode($respuesta);
+}
+
+if ($tipo == "actualizar_proveedor") {
+    $id_persona = $_POST['id_persona'];
+    $nro_identidad = $_POST['nro_identidad'];
+    $razon_social = $_POST['razon_social'];
+    $telefono = $_POST['telefono'];
+    $correo = $_POST['correo'];
+    $departamento = $_POST['departamento'];
+    $provincia = $_POST['provincia'];
+    $distrito = $_POST['distrito'];
+    $cod_postal = $_POST['cod_postal'];
+    $direccion = $_POST['direccion'];
+    $rol = $_POST['rol'];
+    $estado = $_POST['estado'];
+    if ($id_persona == "" || $nro_identidad == "" || $razon_social == "" || $telefono == "" || $correo == "" || $departamento == "" || $provincia == "" || $distrito == "" || $cod_postal == "" || $direccion  == "" || $rol == "" || $estado == "") {
+        $arrResponse = array('status' => false, 'msg' => 'Error, campos vacios');
+    } else {
+        $existeID = $objPersona->ver($id_persona);
+        if (!$existeID) {
+            $arrResponse = array('status' => false, 'msg' => 'Error, proveedor no existe en base de datos');
+        } else {
+            $actualizar = $objPersona->actualizar($id_persona, $nro_identidad, $razon_social, $telefono, $correo, $departamento, $provincia, $distrito, $cod_postal, $direccion, $rol, $estado);
+            if ($actualizar) {
+                $arrResponse = array('status' => true, 'msg' => "Proveedor actualizado correctamente");
+            } else {
+                $arrResponse = array('status' => false, 'msg' => $actualizar);
+            }
+        }
+        echo json_encode($arrResponse);
+    }
+}
+
+if ($tipo == "eliminar_proveedor") {
+    $id_persona = $_POST['id_persona'];
+    $respuesta = array('status' => false, 'msg' => '');
+    $resultado = $objPersona->eliminar($id_persona);
+
+    if ($resultado) {
+        $arrResponse = array('status' => true, 'msg' => 'Proveedor eliminado correctamente');
+    } else {
+        $arrResponse = array('status' => false, 'msg' => $resultado);
+    }
+    echo json_encode($arrResponse);
+}
+
+if ($tipo == "ver") {
+    //print_r($_POST);
+    $respuesta = array('status' => false, 'msg' => 'Error');
+    $id_persona = $_POST['id_persona'];
+    $usuario = $objPersona->ver($id_persona);
+    if ($usuario) {
+        $respuesta['status'] = true;
+        $respuesta['data'] = $usuario;
+    } else {
+        $respuesta['msg'] = 'Error, usuario no existe';
+    }
+    echo json_encode($respuesta);
+}
+
+
+if ($tipo == "actualizar") {
+    //print_r($_POST);
+    $id_persona = $_POST['id_persona'];
+    $nro_identidad = $_POST['nro_identidad'];
+    $razon_social = $_POST['razon_social'];
+    $telefono = $_POST['telefono'];
+    $correo = $_POST['correo'];
+    $departamento = $_POST['departamento'];
+    $provincia = $_POST['provincia'];
+    $distrito = $_POST['distrito'];
+    $cod_postal = $_POST['cod_postal'];
+    $direccion = $_POST['direccion'];
+    $rol = $_POST['rol'];
+    $estado = $_POST['estado'];
+    if ($id_persona == "" || $nro_identidad == "" || $razon_social == "" || $telefono == "" || $correo == "" || $departamento == "" || $provincia == "" || $distrito == "" || $cod_postal == "" || $direccion  == "" || $rol == "" || $estado == "") {
+        $arrResponse = array('status' => false, 'msg' => 'Error, campos vacios');
+    } else {
+        $existeID = $objPersona->ver($id_persona);
+        if (!$existeID) {
+            $arrResponse = array('status' => false, 'msg' => 'Error, usuario no existe en base de datos');
+        } else {
+            //actualizar
+            $actualizar = $objPersona->actualizar($id_persona, $nro_identidad, $razon_social, $telefono, $correo, $departamento, $provincia, $distrito, $cod_postal, $direccion, $rol, $estado);
+            if ($actualizar) {
+                $arrResponse = array('status' => true, 'msg' => "Actualizado correctamente");
+            } else {
+                $arrResponse = array('status' => false, 'msg' => $actualizar);
+            }
+        }
+        echo json_encode($arrResponse);
+    }
+}
+
+if ($tipo == "eliminar") {
+    //print_r($_POST);
+    $id_persona = $_POST['id_persona'];
+    $respuesta = array('status' => false, 'msg' => '');
+    $resultado = $objPersona->eliminar($id_persona);
+
+    if ($resultado) {
+        $arrResponse = array('status' => true, 'msg' => 'Usuario eliminado correctamente');
+    } else {
+        $arrResponse = array('status' => false, 'msg' => $resultado);
+    }
+    echo json_encode($arrResponse);
+}
+
+if ($tipo == "ver_client") {
+    $respuesta = array('status' => false, 'msg' => 'fallo el controlador');
+    $usuarios = $objPersona->verClient();
+    error_log("Número de clientes encontrados: " . count($usuarios));
+    if (count($usuarios)) {
+        $respuesta = array('status' => true, 'msg' => '', 'data' => $usuarios);
+    }
+    echo json_encode($respuesta);
+}

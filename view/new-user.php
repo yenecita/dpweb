@@ -86,6 +86,8 @@
                                 <option value="" disable selected>Seleccione</option>
                                 <option value="vendedor">vendedor</option>
                                 <option value="administrador">administrador</option>
+                                <option value="cliente">cliente</option>
+                                 <option value="proveedor">proveedor</option>
                             </select>
                         </div>
                     </div>
@@ -96,5 +98,5 @@
         </div>
     </div>
     <!-- FIN DE CUERPO DE PAGINA -->
-     
+
 <script src="<?php echo BASE_URL; ?>view/function/user.js"></script>

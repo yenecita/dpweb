@@ -51,12 +51,6 @@ http_response_code(404);
     <h1>404</h1>
     <p><strong>¡Vaya!</strong> La página que buscas no se ha encontrado.</p>
     <p>Es posible que el enlace esté roto o que la página haya sido movida o eliminada.</p>
-    
-    <!-- Imagen de error 404 -->
-    <div class="image-container">
-        <img src="https://www.logoku.com/image/data/items/1715858038_logokucom_wolf-fire.jpg.webp" alt="Imagen de error 404">
-    </div>
-    
     <p><a href="/">Haz clic aquí para regresar a la página de inicio</a></p>
 </body>
 </html>

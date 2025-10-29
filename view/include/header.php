@@ -12,7 +12,7 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm sticky-top" style="background-color: #6f42c1;">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">logo</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -26,18 +26,36 @@
                      <li class="nav-item">
                         <a class="nav-link" href="<?php echo BASE_URL; ?>users">users</a>
                     </li>
+                    <!--
                     <li class="nav-item">
-                        <a class="nav-link" href="#">products</a>
+                        <a class="nav-link" href="<?php echo BASE_URL; ?>new-products">products</a>
+                    </li>-->
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?php echo BASE_URL; ?>product">products</a>
+                    </li>
+                    <!--<li class="nav-item">
+                    <a class="nav-link" href="<?php echo BASE_URL; ?>new-categoria">categories</a>
+                    </li>-->
+                    <li class="nav-item">
+                    <a class="nav-link" href="<?php echo BASE_URL; ?>categoria">categories</a>
+                    </li>
+                    <!--<li class="nav-item">
+                    <a class="nav-link" href="<?php echo BASE_URL; ?>new-clients">clients</a>
+                    </li>-->
+                    <li class="nav-item">
+                    <a class="nav-link" href="<?php echo BASE_URL; ?>clients">clients</a>
+                    </li>
+                    <!--<li class="nav-item">
+                    <a class="nav-link" href="<?php echo BASE_URL; ?>new-proveedor">proveedor</a>
+                    </li>-->
+                    <li class="nav-item">
+                    <a class="nav-link" href="<?php echo BASE_URL; ?>proveedor">proveedor</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">sales</a>
                     </li>
+                    <li class="nav-item">
                     <a class="nav-link" href="#">shopping</a>
-                    </li>
-                    <a class="nav-link" href="#">categorias</a>
-                
-                    </li>
-                    <a class="nav-link" href="#">clients</a>
                     </li>
                     <li class="nav-item dropdown">
                         
@@ -54,9 +72,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-                    </li>
+                    
                 </ul>
                 <form class="d-flex" role="search">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
