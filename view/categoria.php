@@ -21,32 +21,6 @@
         </a>
     </div>
 
-    <!-- FORMULARIO DE REGISTRO -->
-    <div class="card">
-        <h5 class="card-header">REGISTRO DE CATEGORÍA</h5>
-        <form id="frm_categoria" action="" method="POST" enctype="multipart/form-data">
-            <div class="card-body">
-                <div class="mb-3 row">
-                    <label class="col-sm-4 col-form-label">Nombre:</label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="nombre" name="nombre" required>
-                    </div>
-                </div>
-                <div class="mb-3 row">
-                    <label class="col-sm-4 col-form-label">Detalle:</label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="detalle" name="detalle" required>
-                    </div>
-                </div>
-            </div>
-            <div class="card-body">
-                <button type="submit" class="btn btn-success">Registrar</button>
-                <button type="reset" class="btn btn-info">Limpiar</button>
-                <button type="button" class="btn btn-danger">Cancelar</button>
-            </div>
-        </form>
-    </div>
-
     <!-- LISTA DE CATEGORÍAS -->
     <h4 class="mt-4 mb-3">LISTA DE CATEGORÍAS</h4>
     <table class="table table-bordered table-striped">
