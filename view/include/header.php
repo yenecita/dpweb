@@ -15,81 +15,73 @@
     <nav class="navbar navbar-expand-lg navbar-dark shadow-sm sticky-top" style="background-color: #6f42c1;">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">logo</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="#">Home</a>
                     </li>
-                     <li class="nav-item">
-                        <a class="nav-link" href="<?php echo BASE_URL; ?>users">users</a>
-                    </li>
-                    <!--
-                    <li class="nav-item">
-                        <a class="nav-link" href="<?php echo BASE_URL; ?>new-products">products</a>
-                    </li>-->
-                    <li class="nav-item">
-                        <a class="nav-link" href="<?php echo BASE_URL; ?>product">products</a>
-                    </li>
-                    <!--<li class="nav-item">
-                    <a class="nav-link" href="<?php echo BASE_URL; ?>new-categoria">categories</a>
-                    </li>-->
-                    <li class="nav-item">
-                    <a class="nav-link" href="<?php echo BASE_URL; ?>categoria">categories</a>
-                    </li>
-                    <!--<li class="nav-item">
-                    <a class="nav-link" href="<?php echo BASE_URL; ?>new-clients">clients</a>
-                    </li>-->
-                    <li class="nav-item">
-                    <a class="nav-link" href="<?php echo BASE_URL; ?>clients">clients</a>
-                    </li>
-                    <!--<li class="nav-item">
-                    <a class="nav-link" href="<?php echo BASE_URL; ?>new-proveedor">proveedor</a>
-                    </li>-->
-                    <li class="nav-item">
-                    <a class="nav-link" href="<?php echo BASE_URL; ?>proveedor">proveedor</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">sales</a>
-                    </li>
-                    <li class="nav-item">
-                    <a class="nav-link" href="#">shopping</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a>
-                            </li>
-                            <li><a class="dropdown-item" href="#">Another action</a>
-                            </li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
 
-                            <li><a class="dropdown-item" href="#"> categorias</a>
-                            </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?php echo BASE_URL; ?>users">Users</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?php echo BASE_URL; ?>product">Products</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?php echo BASE_URL; ?>categoria">Categories</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?php echo BASE_URL; ?>clients">Clients</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?php echo BASE_URL; ?>proveedor">Proveedor</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Sales</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Shopping</a>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            More
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Action</a></li>
+                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Categorias</a></li>
                         </ul>
                     </li>
-                    
+
                 </ul>
+
                 <form class="d-flex" role="search">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Dropdown
+                            <a class="nav-link dropdown-toggle" href="#" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                Usuario
                             </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">perfil</a>
-                                </li>
-                                <li><a class="dropdown-item" href="#"> logout</a>
-                                </li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="#">Perfil</a></li>
+                                <li><a class="dropdown-item" href="#">Logout</a></li>
+                                <li><hr class="dropdown-divider"></li>
                             </ul>
-
                         </li>
                     </ul>
                 </form>

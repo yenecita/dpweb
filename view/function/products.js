@@ -1,5 +1,4 @@
- 
- // Validación y envío del formulario de usuario
+// Validación y envío del formulario de producto
 function validar_form(tipo) {
     // Obtener todos los campos
     let codigo = document.getElementById("codigo").value;
@@ -16,7 +15,7 @@ function validar_form(tipo) {
         stock == "" || id_categoria == "" || fecha_vencimiento == "" || id_proveedor == ""
     ) {
         Swal.fire({
-            icon: "error", 
+            icon: "error",
             title: "Error",
             text: 'Por favor, complete todos los campos requeridos',
             confirmButtonText: 'Entendido'
@@ -24,15 +23,11 @@ function validar_form(tipo) {
         return;
     }
 
-    if (tipo === "nuevo") {
-        registrarProducto();
-    }
-    if (tipo === "actualizar") {
-        actualizarProducto();
-    }
+    if (tipo === "nuevo") registrarProducto();
+    if (tipo === "actualizar") actualizarProducto();
 }
 
-// Evento submit para frm_products
+// Evento submit para registrar producto
 if (document.querySelector('#frm_products')) {
     let frm_product = document.querySelector('#frm_products');
     frm_product.onsubmit = function (e) {
@@ -63,7 +58,7 @@ async function registrarProducto() {
             alert(json.msg);
         }
     } catch (e) {
-        console.log("Error al registrar Producto:" + e);
+        console.log("Error al registrar Producto: " + e);
     }
 }
 
@@ -76,24 +71,18 @@ async function view_product() {
             cache: 'no-cache'
         });
 
-        if (!respuesta.ok) {
-            throw new Error("Respuesta no válida del servidor");
-        }
-
+        if (!respuesta.ok) throw new Error("Respuesta no válida del servidor");
         let json = await respuesta.json();
 
         if (json.status && json.data && json.data.length > 0) {
             let html = '';
             json.data.forEach((product, index) => {
-                let imagenHtml = '';
-                if (product.imagen) {
-                    imagenHtml = `<img src="${base_url}${product.imagen}" alt="Imagen del producto" style="width: 50px; height: 50px; object-fit: cover;">`;
-                } else {
-                    imagenHtml = 'Sin imagen';
-                }
+                let imagenHtml = product.imagen
+                    ? `<img src="${base_url}${product.imagen}" alt="Imagen del producto" style="width: 50px; height: 50px; object-fit: cover;">`
+                    : 'Sin imagen';
                 html += `
                 <tr>
-                    <td>${product.id}</td>
+                    <td>${index + 1}</td>
                     <td>${product.codigo || ''}</td>
                     <td>${product.nombre || ''}</td>
                     <td>${product.detalle || ''}</td>
@@ -104,8 +93,8 @@ async function view_product() {
                     <td>${product.id_proveedor || ''}</td>
                     <td>${imagenHtml}</td>
                     <td style="text-align:center;">
-                      <button onclick="window.location.href='${base_url}edit-product/${product.id}'" class="btn btn-editar btn-primary">Editar</button>
-                      <button class="btn btn-danger" onclick="btn_eliminar(${product.id});">Eliminar</button>
+                        <button onclick="window.location.href='${base_url}edit-product/${product.id}'" class="btn btn-primary btn-sm">Editar</button>
+                        <button onclick="btn_eliminar(${product.id});" class="btn btn-danger btn-sm">Eliminar</button>
                     </td>
                 </tr>`;
             });
@@ -115,21 +104,21 @@ async function view_product() {
         }
     } catch (error) {
         console.error("Error al obtener productos:", error);
-        document.getElementById('content_products').innerHTML = '<tr><td colspan="8">Error al cargar los productos</td></tr>';
+        document.getElementById('content_products').innerHTML = '<tr><td colspan="11">Error al cargar los productos</td></tr>';
     }
 }
+
+// Cargar productos al inicio
+if (document.getElementById('content_products')) view_product();
 
 // Editar producto
 async function edit_product() {
     try {
         let id_producto = document.getElementById('id_producto').value;
         if (!id_producto) {
-            // Si no hay id en el campo oculto, intentar obtenerlo de la URL
             const urlParams = new URLSearchParams(window.location.search);
             id_producto = urlParams.get('id');
-            if (id_producto) {
-                document.getElementById('id_producto').value = id_producto;
-            }
+            if (id_producto) document.getElementById('id_producto').value = id_producto;
         }
 
         if (!id_producto) {
@@ -148,13 +137,12 @@ async function edit_product() {
         });
 
         let json = await respuesta.json();
-
         if (!json.status) {
             alert(json.msg);
             return;
         }
 
-        // Esperar un poco para que los selects se carguen
+        // Llenar campos con la información del producto
         setTimeout(() => {
             document.getElementById('id_producto').value = json.data.id;
             document.getElementById('codigo').value = json.data.codigo;
@@ -168,18 +156,18 @@ async function edit_product() {
 
             // Mostrar imagen actual si existe
             const previewDiv = document.getElementById('current_image_preview');
-            if (json.data.imagen) {
-                previewDiv.innerHTML = `<img src="${base_url}${json.data.imagen}" alt="Imagen actual" style="width: 100px; height: 100px; object-fit: cover; border: 1px solid #ccc;">`;
-            } else {
-                previewDiv.innerHTML = '<small>No hay imagen actual</small>';
+            if (previewDiv) {
+                previewDiv.innerHTML = json.data.imagen
+                    ? `<img src="${base_url}${json.data.imagen}" alt="Imagen actual" style="width: 100px; height: 100px; object-fit: cover; border: 1px solid #ccc;">`
+                    : '<small>No hay imagen actual</small>';
             }
         }, 500);
-
     } catch (error) {
-        console.log('oops, ocurrió un error: ' + error);
+        console.log('Error al editar producto: ' + error);
     }
 }
 
+// Evento submit para editar producto
 if (document.querySelector('#frm_edit_product')) {
     let frm_edit_product = document.querySelector('#frm_edit_product');
     frm_edit_product.onsubmit = function (e) {
@@ -203,18 +191,17 @@ async function actualizarProducto() {
     let json = await respuesta.json();
 
     if (!json.status) {
-        alert("Oooops, ocurrió un error al actualizar, intentelo nuevamente");
+        alert("Ocurrió un error al actualizar, inténtelo nuevamente");
         console.log(json.msg);
     } else {
         alert(json.msg);
-        // Redirigir a la lista de productos después de actualizar
         window.location.href = base_url + 'product';
     }
 }
 
 // Eliminar producto
 async function btn_eliminar(id) {
-    if (confirm("Estás seguro de eliminar este producto")) {
+    if (confirm("¿Estás seguro de eliminar este producto?")) {
         eliminarProducto(id);
     }
 }
@@ -242,11 +229,6 @@ async function eliminarProducto(id) {
     } catch (error) {
         console.log("Error al eliminar producto: " + error);
     }
-}
-
-// Cargar productos al inicio
-if (document.getElementById('content_products')) {
-    view_product();
 }
 
 // Cargar categorías

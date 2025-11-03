@@ -2,6 +2,7 @@
 <div class="container-fluid">
     <div class="card">
         <h5 class="card-header">REGISTRO DE PRODUCTO</h5>
+
         <form id="frm_products" action="" method="POST" enctype="multipart/form-data">
             <div class="card-body">
 
@@ -40,53 +41,53 @@
                     </div>
                 </div>
 
-                <div class="card-body">
-                    <div class="mb-3 row">
-                        <label for="id_categoria" class="col-sm-4 col-form-label">Categoría:</label>
-                        <div class="col-sm-8">
-                            <select class="form-control" name="id_categoria" id="id_categoria" required>
-                                <option value="" disable selected>Seleccione</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="mb-3 row">
-                        <label for="fecha_vencimiento" class="col-sm-4 col-form-label">Fecha Vencimiento:</label>
-                        <div class="col-sm-8">
-                            <input type="date" class="form-control" id="fecha_vencimiento" name="fecha_vencimiento" required>
-                        </div>
-                    </div>
-
-                    <div class="mb-3 row">
-                        <label for="imagen" class="col-sm-4 col-form-label">Imagen:</label>
-                        <div class="col-sm-8">
-                            <input type="file" class="form-control" id="imagen" name="imagen" accept=".jpg, .jpeg, .png" required>
-                        </div>
-                    </div>
-
-                    <div class="mb-3 row">
-                        <label for="id_proveedor" class="col-sm-4 col-form-label">Proveedor:</label>
-                        <div class="col-sm-8">
-                            <select class="form-control" name="id_proveedor" id="id_proveedor" required>
-                                <option value="">Seleccione</option>
-                                <option value="proveedor">proveedor</option>
-                            </select>
-                        </div>
+                <div class="mb-3 row">
+                    <label for="id_categoria" class="col-sm-4 col-form-label">Categoría:</label>
+                    <div class="col-sm-8">
+                        <select class="form-control" name="id_categoria" id="id_categoria" required>
+                            <option value="" disabled selected>Seleccione</option>
+                            <!-- Las opciones se cargan dinámicamente desde JS -->
+                        </select>
                     </div>
                 </div>
-                <div class="mt-3">
-                    <button type="submit" class="btn btn-success">Registrar</button>
-                    <button type="reset" class="btn btn-info">Limpiar</button>
-                    <a href="<?= BASE_URL ?>category" class="btn btn-danger">Cancelar</a>
+
+                <div class="mb-3 row">
+                    <label for="fecha_vencimiento" class="col-sm-4 col-form-label">Fecha de Vencimiento:</label>
+                    <div class="col-sm-8">
+                        <input type="date" class="form-control" id="fecha_vencimiento" name="fecha_vencimiento" required>
+                    </div>
                 </div>
 
+                <div class="mb-3 row">
+                    <label for="imagen" class="col-sm-4 col-form-label">Imagen:</label>
+                    <div class="col-sm-8">
+                        <input type="file" class="form-control" id="imagen" name="imagen" accept=".jpg, .jpeg, .png" required>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label for="id_proveedor" class="col-sm-4 col-form-label">Proveedor:</label>
+                    <div class="col-sm-8">
+                        <select class="form-control" name="id_proveedor" id="id_proveedor" required>
+                            <option value="" disabled selected>Seleccione</option>
+                            <!-- Las opciones se cargan dinámicamente desde JS -->
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="card-footer">
+                <button type="submit" class="btn btn-success">Registrar</button>
+                <button type="reset" class="btn btn-info">Limpiar</button>
+                <a href="<?= BASE_URL ?>product" class="btn btn-danger">Cancelar</a>
+            </div>
         </form>
     </div>
 </div>
 <!-- FIN DE CUERPO DE PAGINA -->
 
 <script src="<?php echo BASE_URL; ?>view/function/products.js"></script>
-
 
 <script>
     cargar_categorias();

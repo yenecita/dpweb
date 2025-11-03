@@ -1,9 +1,11 @@
-<!-- INICIO DE CUERPO DE PAGINA -->
+<!-- INICIO DE CUERPO DE PÁGINA -->
 <div class="container-fluid">
     <div class="card">
         <h5 class="card-header">EDITAR DATOS DE PRODUCTOS</h5>
+
         <form id="frm_edit_product" action="" method="POST" enctype="multipart/form-data">
             <input type="hidden" id="id_producto" name="id_producto" value="<?php echo $_GET['id'] ?? ''; ?>">
+
             <div class="card-body">
                 <div class="mb-3 row">
                     <label for="codigo" class="col-sm-4 col-form-label">Código:</label>
@@ -50,7 +52,7 @@
                 </div>
 
                 <div class="mb-3 row">
-                    <label for="fecha_vencimiento" class="col-sm-4 col-form-label">Fecha Vencimiento:</label>
+                    <label for="fecha_vencimiento" class="col-sm-4 col-form-label">Fecha de vencimiento:</label>
                     <div class="col-sm-8">
                         <input type="date" class="form-control" id="fecha_vencimiento" name="fecha_vencimiento" required>
                     </div>
@@ -69,11 +71,11 @@
                     <label for="id_proveedor" class="col-sm-4 col-form-label">Proveedor:</label>
                     <div class="col-sm-8">
                         <select class="form-control" name="id_proveedor" id="id_proveedor" required>
-                            <option value="proveedor">proveedor</option>
+                            <option value="">Seleccione</option>
                         </select>
                     </div>
                 </div>
-                
+
                 <div class="mb-3 row">
                     <label for="estado" class="col-sm-4 col-form-label">Estado:</label>
                     <div class="col-sm-8">
@@ -83,16 +85,16 @@
                         </select>
                     </div>
                 </div>
-            </div>
-            <div class="mt-3">
-                <div class="col-sm-8">
-                <button type="submit" class="btn btn-success">Actualizar</button>
-                <a href="<?= BASE_URL ?>product" class="btn btn-danger">Cancelar</a>
+
+                <div class="mt-3 text-end">
+                    <button type="submit" class="btn btn-success">Actualizar</button>
+                    <a href="<?= BASE_URL ?>product" class="btn btn-danger">Cancelar</a>
+                </div>
             </div>
         </form>
     </div>
 </div>
-<!-- FIN DE CUERPO DE PAGINA -->
+<!-- FIN DE CUERPO DE PÁGINA -->
 
 <script src="<?php echo BASE_URL; ?>view/function/products.js"></script>
 <script>
@@ -103,4 +105,3 @@
     }
     initEdit();
 </script>
-

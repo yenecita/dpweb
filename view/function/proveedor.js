@@ -27,15 +27,11 @@ function validar_form(tipo) {
         return;
     }
 
-    if (tipo === "nuevo") {
-        registrarProveedor();
-    }
-    if (tipo === "actualizar") {
-        actualizarProveedor();
-    }
+    if (tipo === "nuevo") registrarProveedor();
+    if (tipo === "actualizar") actualizarProveedor();
 }
 
-// Evento submit para frm_products
+// Evento submit para registrar proveedor
 if (document.querySelector('#frm_proveedor')) {
     let frm_proveedor = document.querySelector('#frm_proveedor');
     frm_proveedor.onsubmit = function (e) {
@@ -108,6 +104,11 @@ async function view_proveedor() {
     }
 }
 
+// Cargar proveedores al inicio
+if (document.getElementById('content_proveedor')) {
+    view_proveedor();
+}
+
 // Editar proveedor
 async function edit_proveedor() {
     try {
@@ -142,13 +143,14 @@ async function edit_proveedor() {
         document.getElementById('estado').value = json.data.estado;
 
     } catch (error) {
-        console.log('oops, ocurrió un error: ' + error);
+        console.log('Oops, ocurrió un error: ' + error);
     }
 }
 
+// Evento submit para editar proveedor
 if (document.querySelector('#frm_edit_proveedor')) {
-    let frm_product = document.querySelector('#frm_edit_proveedor');
-    frm_product.onsubmit = function (e) {
+    let frm_proveedor = document.querySelector('#frm_edit_proveedor');
+    frm_proveedor.onsubmit = function (e) {
         e.preventDefault();
         validar_form("actualizar");
     }
@@ -169,17 +171,17 @@ async function actualizarProveedor() {
     let json = await respuesta.json();
 
     if (!json.status) {
-        alert("Oooops, ocurrió un error al actualizar, intentelo nuevamente");
+        alert("Ocurrió un error al actualizar, inténtelo nuevamente");
         console.log(json.msg);
-        return;
     } else {
         alert(json.msg);
+        window.location.href = base_url + 'proveedores';
     }
 }
 
 // Eliminar proveedor
 async function btn_eliminar_proveedor(id) {
-    if (confirm("Estás seguro de eliminar este proveedor")) {
+    if (confirm("¿Estás seguro de eliminar este proveedor?")) {
         eliminarProveedor(id);
     }
 }
@@ -207,49 +209,4 @@ async function eliminarProveedor(id) {
     } catch (error) {
         console.log("Error al eliminar proveedor: " + error);
     }
-}
-
-// Cargar proveedores al inicio
-if (document.getElementById('content_proveedor')) {
-    view_proveedor();
-}
-
-// Cargar categorías
-async function cargar_categorias() {
-    let respuesta = await fetch(base_url + 'control/CategoriaControl.php?tipo=ver_categorias', {
-        method: 'POST',
-        mode: 'cors',
-        cache: 'no-cache',
-    });
-
-    let json = await respuesta.json();
-    let contenido = '<option value="">Seleccione</option>';
-
-    json.data.forEach(categoria => {
-        contenido += `<option value="+categoria.id+">` + categoria.nombre + `</option>`;
-    });
-    //console.log(contenido);
-    document.getElementById("id_categoria").innerHTML = contenido;
-}
-
-// Cargar proveedores
-async function cargar_proveedor() {
-    let respuesta = await fetch(base_url + 'control/UsuarioController.php?tipo=listar_proveedores', {
-        method: 'POST',
-        mode: 'cors',
-        cache: 'no-cache',
-    });
-
-    let json = await respuesta.json();
-    let contenido = '<option value="">seleccione</option>';
-    json.data.forEach(proveedor => {
-        contenido += `<option value="${proveedor.id}">` + proveedor.razon_social + `</option>`;
-    });
-    //console.log(contenido);
-    document.getElementById("id_proveedor").innerHTML = contenido;
-}
-
-// Inicializar la vista de clientes si el elemento existe (para la tabla de clientes)
-if (document.getElementById('content_clients')) {
-    view_clients();
 }

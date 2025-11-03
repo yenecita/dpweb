@@ -6,41 +6,6 @@
             <div class="card-body">
 
                 <div class="mb-3 row">
-                    <label for="codigo" class="col-sm-4 col-form-label">Código:</label>
-                    <div class="col-sm-8">
-                        <input type="number" class="form-control" id="codigo" name="codigo" required>
-                    </div>
-                </div>
-
-                <div class="mb-3 row">
-                    <label for="nombre" class="col-sm-4 col-form-label">Nombre:</label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="nombre" name="nombre" required>
-                    </div>
-                </div>
-
-                <div class="mb-3 row">
-                    <label for="detalle" class="col-sm-4 col-form-label">Detalle:</label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="detalle" name="detalle" required>
-                    </div>
-                </div>
-
-                <div class="mb-3 row">
-                    <label for="precio" class="col-sm-4 col-form-label">Precio:</label>
-                    <div class="col-sm-8">
-                        <input type="number" step="0.01" class="form-control" id="precio" name="precio" required>
-                    </div>
-                </div>
-
-                <div class="mb-3 row">
-                    <label for="stock" class="col-sm-4 col-form-label">Stock:</label>
-                    <div class="col-sm-8">
-                        <input type="number" class="form-control" id="stock" name="stock" required>
-                    </div>
-                </div>
-
-                <div class="mb-3 row">
                     <label for="nro_identidad" class="col-sm-4 col-form-label">Nro Identidad:</label>
                     <div class="col-sm-8">
                         <input type="text" class="form-control" id="nro_identidad" name="nro_identidad" required>
@@ -48,14 +13,14 @@
                 </div>
 
                 <div class="mb-3 row">
-                    <label for="razon_social" class="col-sm-4 col-form-label">Razon Social:</label>
+                    <label for="razon_social" class="col-sm-4 col-form-label">Razón Social:</label>
                     <div class="col-sm-8">
                         <input type="text" class="form-control" id="razon_social" name="razon_social" required>
                     </div>
                 </div>
 
                 <div class="mb-3 row">
-                    <label for="telefono" class="col-sm-4 col-form-label">Telefono:</label>
+                    <label for="telefono" class="col-sm-4 col-form-label">Teléfono:</label>
                     <div class="col-sm-8">
                         <input type="text" class="form-control" id="telefono" name="telefono" required>
                     </div>
@@ -90,14 +55,14 @@
                 </div>
 
                 <div class="mb-3 row">
-                    <label for="cod_postal" class="col-sm-4 col-form-label">Cod Postal:</label>
+                    <label for="cod_postal" class="col-sm-4 col-form-label">Código Postal:</label>
                     <div class="col-sm-8">
                         <input type="text" class="form-control" id="cod_postal" name="cod_postal" required>
                     </div>
                 </div>
 
                 <div class="mb-3 row">
-                    <label for="direccion" class="col-sm-4 col-form-label">Direccion:</label>
+                    <label for="direccion" class="col-sm-4 col-form-label">Dirección:</label>
                     <div class="col-sm-8">
                         <input type="text" class="form-control" id="direccion" name="direccion" required>
                     </div>
@@ -122,36 +87,13 @@
                     </div>
                 </div>
 
-                <div class="mb-3 row">
-                    <label for="fecha_vencimiento" class="col-sm-4 col-form-label">Fecha Vencimiento:</label>
-                    <div class="col-sm-8">
-                        <input type="date" class="form-control" id="fecha_vencimiento" name="fecha_vencimiento" required>
-                    </div>
-                </div>
-
-                <div class="mb-3 row">
-                    <label for="imagen" class="col-sm-4 col-form-label">Imagen:</label>
-                    <div class="col-sm-8">
-                        <input type="file" class="form-control" id="imagen" name="imagen" accept=".jpg, .jpeg, .png" required>
-                    </div>
-                </div>
-
-                <div class="mb-3 row">
-                    <label for="id_proveedor" class="col-sm-4 col-form-label">Proveedor:</label>
-                    <div class="col-sm-8">
-                        <select class="form-control" name="id_proveedor" id="id_proveedor" required>
-                            <option value="">Seleccione</option>
-                            <option value="proveedor">proveedor</option>
-                        </select>
-                    </div>
-                </div>
             </div>
-            <div class="mt-3">
+
+            <div class="card-footer">
                 <button type="submit" class="btn btn-success">Registrar</button>
                 <button type="reset" class="btn btn-info">Limpiar</button>
-                <a href="<?= BASE_URL ?>category" class="btn btn-danger">Cancelar</a>
+                <a href="<?= BASE_URL ?>proveedor" class="btn btn-danger">Cancelar</a>
             </div>
-
         </form>
     </div>
 </div>
