@@ -87,7 +87,8 @@
                                 <option value="vendedor">vendedor</option>
                                 <option value="administrador">administrador</option>
                                 <option value="cliente">cliente</option>
-                                 <option value="proveedor">proveedor</option>
+                                <option value="proveedor">proveedor</option>
+                                <option value="Usuario">Usuario</option>
                             </select>
                         </div>
                     </div>

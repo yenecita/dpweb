@@ -65,7 +65,7 @@ async function registrarProducto() {
 // Mostrar productos
 async function view_product() {
     try {
-        let respuesta = await fetch(base_url + 'control/ProductsControl.php?tipo=ver_productos', {
+        let respuesta = await fetch(base_url + 'control/productsControl.php?tipo=ver_productos', {
             method: 'POST',
             mode: 'cors',
             cache: 'no-cache'
