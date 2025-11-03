@@ -16,7 +16,6 @@
                 <th style="text-align: center;">Nombres y Apellidos</th>
                 <th style="text-align: center;">Correo</th>
                 <th style="text-align: center;">Rol</th>
-                <th style="text-align: center;">Editor</th>
                 <th style="text-align: center;">Estado</th>
                 <th style="text-align: center;">Acciones</th>
             </tr>
