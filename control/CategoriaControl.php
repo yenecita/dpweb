@@ -72,12 +72,21 @@ if ($tipo == "registrar") {
 
 } elseif ($tipo == "eliminar") {
     $id_categoria = $_POST['id_categoria'] ?? 0;
-    $resultado = $objCategoria->eliminar($id_categoria);
 
-    if ($resultado) {
-        $arrResponse = array('status' => true, 'msg' => 'Categoría eliminada correctamente');
+    // Verificar si hay productos asociados a esta categoría
+    require_once("../model/ProductsModel.php");
+    $objProducto = new ProductsModel();
+    $productosAsociados = $objProducto->contarProductosPorCategoria($id_categoria);
+
+    if ($productosAsociados > 0) {
+        $arrResponse = array('status' => false, 'msg' => 'No se puede eliminar la categoría porque tiene productos asociados');
     } else {
-        $arrResponse = array('status' => false, 'msg' => 'Error al eliminar categoría');
+        $resultado = $objCategoria->eliminar($id_categoria);
+        if ($resultado) {
+            $arrResponse = array('status' => true, 'msg' => 'Categoría eliminada correctamente');
+        } else {
+            $arrResponse = array('status' => false, 'msg' => 'Error al eliminar categoría');
+        }
     }
     echo json_encode($arrResponse);
 

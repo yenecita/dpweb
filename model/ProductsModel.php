@@ -108,4 +108,12 @@ class ProductsModel
         $sql = $this->conexion->query($consulta);
         return $sql;
     }
+
+    public function contarProductosPorCategoria($id_categoria)
+    {
+        $consulta = "SELECT COUNT(*) as total FROM producto WHERE id_categoria='$id_categoria'";
+        $sql = $this->conexion->query($consulta);
+        $resultado = $sql->fetch_object();
+        return $resultado->total;
+    }
 }
