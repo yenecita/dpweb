@@ -5,9 +5,9 @@ class viewModel {
         $white_list = [
             "home", "new-user", "users", "edit-user",
             "new-categoria", "categoria", "edit-categoria",
-            "new-products", "edit-product", "product", "products",
+            "new-products", "edit-product", "product", "products", 
             "new-clients", "clients", "edit-clients",
-            "new-proveedor", "proveedor", "edit-proveedor"
+            "new-proveedor", "proveedor", "edit-proveedor", "vista-cliente"
         ];
 
         if (in_array($view, $white_list)) {
