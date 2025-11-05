@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
 
-require_once("../model/CategoriaModel.php");
+require_once(__DIR__ . "/../model/CategoriaModel.php");
 
 $objCategoria = new CategoriaModel();
 
@@ -74,7 +74,7 @@ if ($tipo == "registrar") {
     $id_categoria = $_POST['id_categoria'] ?? 0;
 
     // Verificar si hay productos asociados a esta categoría
-    require_once("../model/ProductsModel.php");
+    require_once(__DIR__ . "/../model/ProductsModel.php");
     $objProducto = new ProductsModel();
     $productosAsociados = $objProducto->contarProductosPorCategoria($id_categoria);
 

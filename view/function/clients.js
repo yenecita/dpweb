@@ -90,7 +90,7 @@ async function view_client() {
                     <td>${client.razon_social || ''}</td>
                     <td>${client.correo || ''}</td>
                     <td>${client.rol || ''}</td>
-                    <td>${client.estado || ''}</td>
+                    <td>${client.estado == '1' ? 'Activo' : 'Inactivo'}</td>
                     <td style="text-align:center;">
                         <button onclick="window.location.href='${base_url}edit-clients/${client.id}'" class="btn btn-primary btn-sm">Editar</button>
                         <button onclick="btn_eliminar(${client.id});" class="btn btn-danger btn-sm">Eliminar</button>
