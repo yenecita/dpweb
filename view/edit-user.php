@@ -90,6 +90,18 @@
                             <option value="" disable selected>Seleccione</option>
                             <option value="vendedor">vendedor</option>
                             <option value="administrador">administrador</option>
+                            <option value="cliente">cliente</option>
+                            <option value="proveedor">proveedor</option>
+                            <option value="Usuario">Usuario</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label for="estado" class="col-sm-4 col-form-label">estado:</label>
+                    <div class="col-sm-8">
+                        <select class="form-control" name="estado" id="estado" required>
+                            <option value="1">Activo</option>
+                            <option value="0">Inactivo</option>
                         </select>
                     </div>
                 </div>

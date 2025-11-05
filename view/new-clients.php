@@ -72,7 +72,7 @@
                     <label for="rol" class="col-sm-4 col-form-label">Rol:</label>
                     <div class="col-sm-8">
                         <select class="form-control" name="rol" id="rol" required readonly>
-                            <option value="cliente">Cliente</option>
+                            <option value="clients">Cliente</option>
                         </select>
                     </div>
                 </div>

@@ -167,6 +167,7 @@ async function edit_user() {
         document.getElementById('cod_postal').value = json.data.cod_postal;
         document.getElementById('direccion').value = json.data.direccion;
         document.getElementById('rol').value = json.data.rol;
+        document.getElementById('estado').value = json.data.estado;
     } catch (error) {
         console.log('Oops, ocurrió un error: ' + error);
     }

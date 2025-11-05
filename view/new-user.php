@@ -92,6 +92,7 @@
                             </select>
                         </div>
                     </div>
+                    <input type="hidden" name="estado" value="1">
                     <button type="submit" class="btn btn-success">Registrar</button>
                     <button type="reset" class="btn btn-info">Limpiar</button>
                     <button type="button" class="btn btn-danger">Cancelar</button>

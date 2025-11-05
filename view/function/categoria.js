@@ -134,24 +134,29 @@ async function actualizarCategoria() {
     }
 }
 
-function eliminarCategoria(id) {
+async function eliminarCategoria(id) {
     if (confirm("¿Estás seguro de eliminar esta categoría?")) {
-        $.ajax({
-            url: base_url + "control/CategoriaControl.php?tipo=eliminar",
-            type: "POST",
-            data: { id_categoria: id },
-            dataType: "json",
-            success: function (response) {
-                if (response.status) {
-                    alert(response.msg);
-                    view_categoria(); // refresca la tabla
-                } else {
-                    alert(response.msg);
-                }
-            },
-            error: function () {
-                alert("Error en la petición AJAX");
+        try {
+            const datos = new FormData();
+            datos.append('id_categoria', id);
+
+            let respuesta = await fetch(base_url + 'control/CategoriaControl.php?tipo=eliminar', {
+                method: 'POST',
+                mode: 'cors',
+                cache: 'no-cache',
+                body: datos
+            });
+            let json = await respuesta.json();
+
+            if (json.status) {
+                alert(json.msg);
+                view_categoria(); // refresca la tabla
+            } else {
+                alert(json.msg);
             }
-        });
+        } catch (error) {
+            console.error("Error al eliminar categoría:", error);
+            alert("Error en la petición");
+        }
     }
 }

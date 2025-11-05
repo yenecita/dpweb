@@ -1,3 +1,19 @@
+// Función auxiliar para cargar imagen como base64
+async function loadImageAsBase64(url) {
+    try {
+        const response = await fetch(url);
+        const blob = await response.blob();
+        return new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.readAsDataURL(blob);
+        });
+    } catch (error) {
+        console.error('Error loading image:', error);
+        return null;
+    }
+}
+
 // Validación y envío del formulario de producto
 function validar_form(tipo) {
     // Obtener todos los campos
@@ -76,11 +92,16 @@ async function view_product() {
 
         if (json.status && json.data && json.data.length > 0) {
             let html = '';
-            json.data.forEach((product, index) => {
-                let imagenHtml = product.imagen
-                    ? `<img src="${base_url}${product.imagen}" alt="Imagen del producto" style="width: 50px; height: 50px; object-fit: cover;">`
-                    : 'Sin imagen';
-                html += `
+            // Cargar imágenes en paralelo
+            const imagePromises = json.data.map(async (product, index) => {
+                let imagenHtml = 'Sin imagen';
+                if (product.imagen) {
+                    const base64 = await loadImageAsBase64(base_url + product.imagen);
+                    if (base64) {
+                        imagenHtml = 'Imagen del producto';
+                    }
+                }
+                return `
                 <tr>
                     <td>${index + 1}</td>
                     <td>${product.codigo || ''}</td>
@@ -98,6 +119,8 @@ async function view_product() {
                     </td>
                 </tr>`;
             });
+            const rows = await Promise.all(imagePromises);
+            html = rows.join('');
             document.getElementById('content_products').innerHTML = html;
         } else {
             document.getElementById('content_products').innerHTML = '<tr><td colspan="11">No hay productos disponibles</td></tr>';
@@ -157,9 +180,15 @@ async function edit_product() {
             // Mostrar imagen actual si existe
             const previewDiv = document.getElementById('current_image_preview');
             if (previewDiv) {
-                previewDiv.innerHTML = json.data.imagen
-                    ? `<img src="${base_url}${json.data.imagen}" alt="Imagen actual" style="width: 100px; height: 100px; object-fit: cover; border: 1px solid #ccc;">`
-                    : '<small>No hay imagen actual</small>';
+                if (json.data.imagen) {
+                    loadImageAsBase64(base_url + json.data.imagen).then(base64 => {
+                        previewDiv.innerHTML = base64
+                            ? 'Imagen del producto'
+                            : '<small>No hay imagen actual</small>';
+                    });
+                } else {
+                    previewDiv.innerHTML = '<small>No hay imagen actual</small>';
+                }
             }
         }, 500);
     } catch (error) {
