@@ -15,21 +15,21 @@
     <div id="carouselExampleInterval" class="carousel slide mb-5 shadow-sm rounded-3 overflow-hidden" data-bs-ride="carousel">
   <div class="carousel-inner">
     <div class="carousel-item active" data-bs-interval="200">
-      <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=1200&q=80" class="d-block w-100" alt="Auriculares Bluetooth">
+      <img src="img1" class="d-block w-100" alt="Auriculares Bluetooth">
       <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-3">
         <h5>Auriculares Bluetooth</h5>
         <p>Sonido premium con cancelación de ruido</p>
       </div>
     </div>
     <div class="carousel-item" data-bs-interval="200">
-      <img src="https://images.unsplash.com/photo-1519643381401-22c77e60520e?auto=format&fit=crop&w=1200&q=80" class="d-block w-100" alt="Silla Ergonómica">
+      <img src="img2" class="d-block w-100" alt="Silla Ergonómica">
       <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-3">
         <h5>Silla Ergonómica</h5>
         <p>Comodidad y soporte durante todo el día</p>
       </div>
     </div>
     <div class="carousel-item" data-bs-interval="200">
-      <img src="https://images.unsplash.com/photo-1585386959984-a4155224a1b1?auto=format&fit=crop&w=1200&q=80" class="d-block w-100" alt="Teclado Mecánico RGB">
+      <img src="" class="d-block w-100" alt="Teclado Mecánico RGB">
       <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-3">
         <h5>Teclado Mecánico RGB</h5>
         <p>Diseñado para gamers y profesionales</p>
