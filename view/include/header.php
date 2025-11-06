@@ -35,7 +35,7 @@
                         <a class="nav-link" href="<?php echo BASE_URL; ?>product">Products</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?php echo BASE_URL; ?>vista-cliente">view-clients</a>
+                        <a class="nav-link" href="<?php echo BASE_URL; ?>vista-cliente">vista clients</a>
                     </li>
 
                     <li class="nav-item">
