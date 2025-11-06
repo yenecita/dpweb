@@ -1,5 +1,4 @@
 <?php
-// Forzar el código de respuesta HTTP a 404 (No Encontrado)
 http_response_code(404);
 ?>
 
