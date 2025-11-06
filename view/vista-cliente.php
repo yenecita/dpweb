@@ -148,7 +148,7 @@
       <!-- Producto 7 -->
       <div class="col-md-3">
         <div class="card h-100 shadow-sm">
-          <img src="https://via.placeholder.com/400x250?text=Reloj" class="card-img-top" alt="Producto 7">
+          <img src="..." class="card-img-top" alt="Producto 7">
           <div class="card-body">
             <h5 class="card-title">Reloj Deportivo</h5>
             <p class="text-muted mb-1">Categoría: Accesorios</p>
