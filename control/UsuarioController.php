@@ -33,7 +33,7 @@ if ($tipo == "registrar") {
             $respuesta = $objPersona->registrar(
                 $nro_identidad, $razon_social, $telefono, $correo,
                 $departamento, $provincia, $distrito, $cod_postal,
-                $direccion, $rol, $password, $estado, $editor
+                $direccion, $rol, $password, $estado
             );
             if ($respuesta) {
                 $arrResponse = array('status' => true, 'msg' => 'Registrado correctamente');

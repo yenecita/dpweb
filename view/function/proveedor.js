@@ -81,7 +81,7 @@ async function view_proveedor() {
             json.data.forEach((proveedor, index) => {
                 html += `
                 <tr>
-                   <td>${index + 1}</td>
+                   <td>${proveedor.id}</td>
                     <td>${proveedor.nro_identidad || ''}</td>
                     <td>${proveedor.razon_social || ''}</td>
                     <td>${proveedor.telefono || ''}</td>
@@ -175,7 +175,7 @@ async function actualizarProveedor() {
         console.log(json.msg);
     } else {
         alert(json.msg);
-        window.location.href = base_url + 'proveedores';
+        window.location.href = base_url + 'proveedor';
     }
 }
 
