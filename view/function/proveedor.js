@@ -126,17 +126,15 @@ if (document.getElementById('content_proveedor')) {
 
 async function edit_proveedor() {
     try {
+        // Obtener el ID del campo oculto (viene de PHP)
         let id_persona = document.getElementById('id_persona').value;
-        if (!id_persona) {
-            const urlParams = new URLSearchParams(window.location.search);
-            id_persona = urlParams.get('id');
-            if (id_persona) document.getElementById('id_persona').value = id_persona;
-        }
 
         if (!id_persona) {
-            console.log('No se encontró ID del proveedor');
+            console.log('No se encontró ID del proveedor en el campo oculto');
             return;
         }
+
+        console.log('ID del proveedor a editar:', id_persona);
 
         const datos = new FormData();
         datos.append('id_persona', id_persona);
@@ -149,29 +147,39 @@ async function edit_proveedor() {
         });
 
         let json = await respuesta.json();
+        console.log('Respuesta del servidor:', json);
 
         if (!json.status) {
-            alert(json.msg);
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: json.msg
+            });
             return;
         }
 
         // Llenar campos con la información del proveedor
-        setTimeout(() => {
-            document.getElementById('nro_identidad').value = json.data.nro_identidad;
-            document.getElementById('razon_social').value = json.data.razon_social;
-            document.getElementById('telefono').value = json.data.telefono;
-            document.getElementById('correo').value = json.data.correo;
-            document.getElementById('departamento').value = json.data.departamento;
-            document.getElementById('provincia').value = json.data.provincia;
-            document.getElementById('distrito').value = json.data.distrito;
-            document.getElementById('cod_postal').value = json.data.cod_postal;
-            document.getElementById('direccion').value = json.data.direccion;
-            document.getElementById('rol').value = json.data.rol;
-            document.getElementById('estado').value = json.data.estado;
-        }, 500);
+        document.getElementById('nro_identidad').value = json.data.nro_identidad || '';
+        document.getElementById('razon_social').value = json.data.razon_social || '';
+        document.getElementById('telefono').value = json.data.telefono || '';
+        document.getElementById('correo').value = json.data.correo || '';
+        document.getElementById('departamento').value = json.data.departamento || '';
+        document.getElementById('provincia').value = json.data.provincia || '';
+        document.getElementById('distrito').value = json.data.distrito || '';
+        document.getElementById('cod_postal').value = json.data.cod_postal || '';
+        document.getElementById('direccion').value = json.data.direccion || '';
+        document.getElementById('rol').value = json.data.rol || '';
+        document.getElementById('estado').value = json.data.estado || '';
+
+        console.log('Campos llenados correctamente');
 
     } catch (error) {
-        console.log('Oops, ocurrió un error: ' + error);
+        console.log('Error al editar proveedor:', error);
+        Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Ocurrió un error al cargar los datos del proveedor"
+        });
     }
 }
 
