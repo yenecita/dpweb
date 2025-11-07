@@ -1,4 +1,4 @@
-// Validación y envío del formulario de proveedor
+// VALIDACIÓN Y ENVÍO DE FORMULARIO DE PROVEEDOR
 function validar_form(tipo) {
     // Obtener todos los campos
     let nro_identidad = document.getElementById("nro_identidad").value;
@@ -13,34 +13,36 @@ function validar_form(tipo) {
     let rol = document.getElementById("rol").value;
     let estado = document.getElementById("estado").value;
 
+    // Validar campos vacíos
     if (
-        nro_identidad == "" || razon_social == "" || telefono == "" || correo == "" ||
-        departamento == "" || provincia == "" || distrito == "" || cod_postal == "" ||
-        direccion == "" || rol == "" || estado == ""
+        nro_identidad === "" || razon_social === "" || telefono === "" || correo === "" ||
+        departamento === "" || provincia === "" || distrito === "" || cod_postal === "" ||
+        direccion === "" || rol === "" || estado === ""
     ) {
         Swal.fire({
             icon: "error",
             title: "Error",
-            text: 'Por favor, complete todos los campos requeridos',
-            confirmButtonText: 'Entendido'
+            text: "Por favor, complete todos los campos requeridos",
+            confirmButtonText: "Entendido"
         });
         return;
     }
 
+    // Decidir acción según tipo
     if (tipo === "nuevo") registrarProveedor();
     if (tipo === "actualizar") actualizarProveedor();
 }
 
-// Evento submit para registrar proveedor
+// EVENTO SUBMIT - REGISTRO DE PROVEEDOR
 if (document.querySelector('#frm_proveedor')) {
     let frm_proveedor = document.querySelector('#frm_proveedor');
     frm_proveedor.onsubmit = function (e) {
         e.preventDefault();
         validar_form("nuevo");
-    }
+    };
 }
 
-// Función para registrar proveedor
+// FUNCIÓN PARA REGISTRAR PROVEEDOR
 async function registrarProveedor() {
     try {
         const frm_proveedor = document.querySelector('#frm_proveedor');
@@ -56,17 +58,26 @@ async function registrarProveedor() {
         let json = await respuesta.json();
 
         if (json.status) {
-            alert(json.msg);
-            document.getElementById('frm_proveedor').reset();
+            Swal.fire({
+                icon: "success",
+                title: "Registro exitoso",
+                text: json.msg
+            });
+            frm_proveedor.reset();
         } else {
-            alert(json.msg);
+            Swal.fire({
+                icon: "error",
+                title: "Error al registrar",
+                text: json.msg
+            });
         }
     } catch (e) {
-        console.log("Error al registrar Proveedor:" + e);
+        console.log("Error al registrar Proveedor: " + e);
     }
 }
 
-// Mostrar proveedores
+
+// MOSTRAR PROVEEDORES
 async function view_proveedor() {
     try {
         let respuesta = await fetch(base_url + 'control/UsuarioController.php?tipo=listar_proveedores', {
@@ -76,12 +87,14 @@ async function view_proveedor() {
         });
         let json = await respuesta.json();
 
+        let contenido = document.getElementById('content_proveedor');
+
         if (json.status && json.data && json.data.length > 0) {
             let html = '';
             json.data.forEach((proveedor, index) => {
                 html += `
                 <tr>
-                   <td>${index + 1}</td>
+                    <td>${proveedor.id}</td>
                     <td>${proveedor.nro_identidad || ''}</td>
                     <td>${proveedor.razon_social || ''}</td>
                     <td>${proveedor.telefono || ''}</td>
@@ -89,14 +102,14 @@ async function view_proveedor() {
                     <td>${proveedor.direccion || ''}</td>
                     <td>${proveedor.estado == '1' ? 'Activo' : 'Inactivo'}</td>
                     <td style="text-align:center;">
-                      <button onclick="window.location.href='${base_url}edit-proveedor/${proveedor.id}'" class="btn btn-editar btn-primary">Editar</button>
-                      <button class="btn btn-danger" onclick="btn_eliminar_proveedor(${proveedor.id});">Eliminar</button>
-                    </td >
+                        <button onclick="window.location.href='${base_url}edit-proveedor/${proveedor.id}'" class="btn btn-editar btn-primary">Editar</button>
+                        <button class="btn btn-danger" onclick="btn_eliminar_proveedor(${proveedor.id});">Eliminar</button>
+                    </td>
                 </tr>`;
             });
-            document.getElementById('content_proveedor').innerHTML = html;
+            contenido.innerHTML = html;
         } else {
-            document.getElementById('content_proveedor').innerHTML = '<tr><td colspan="8">No hay proveedores disponibles</td></tr>';
+            contenido.innerHTML = '<tr><td colspan="8">No hay proveedores disponibles</td></tr>';
         }
     } catch (error) {
         console.error("Error al obtener proveedores:", error);
@@ -109,10 +122,20 @@ if (document.getElementById('content_proveedor')) {
     view_proveedor();
 }
 
-// Editar proveedor
+// EDITAR PROVEEDOR
+
 async function edit_proveedor() {
     try {
+        // Obtener el ID del campo oculto (viene de PHP)
         let id_persona = document.getElementById('id_persona').value;
+
+        if (!id_persona) {
+            console.log('No se encontró ID del proveedor en el campo oculto');
+            return;
+        }
+
+        console.log('ID del proveedor a editar:', id_persona);
+
         const datos = new FormData();
         datos.append('id_persona', id_persona);
 
@@ -124,26 +147,39 @@ async function edit_proveedor() {
         });
 
         let json = await respuesta.json();
+        console.log('Respuesta del servidor:', json);
 
         if (!json.status) {
-            alert(json.msg);
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: json.msg
+            });
             return;
         }
 
-        document.getElementById('nro_identidad').value = json.data.nro_identidad;
-        document.getElementById('razon_social').value = json.data.razon_social;
-        document.getElementById('telefono').value = json.data.telefono;
-        document.getElementById('correo').value = json.data.correo;
-        document.getElementById('departamento').value = json.data.departamento;
-        document.getElementById('provincia').value = json.data.provincia;
-        document.getElementById('distrito').value = json.data.distrito;
-        document.getElementById('cod_postal').value = json.data.cod_postal;
-        document.getElementById('direccion').value = json.data.direccion;
-        document.getElementById('rol').value = json.data.rol;
-        document.getElementById('estado').value = json.data.estado;
+        // Llenar campos con la información del proveedor
+        document.getElementById('nro_identidad').value = json.data.nro_identidad || '';
+        document.getElementById('razon_social').value = json.data.razon_social || '';
+        document.getElementById('telefono').value = json.data.telefono || '';
+        document.getElementById('correo').value = json.data.correo || '';
+        document.getElementById('departamento').value = json.data.departamento || '';
+        document.getElementById('provincia').value = json.data.provincia || '';
+        document.getElementById('distrito').value = json.data.distrito || '';
+        document.getElementById('cod_postal').value = json.data.cod_postal || '';
+        document.getElementById('direccion').value = json.data.direccion || '';
+        document.getElementById('rol').value = json.data.rol || '';
+        document.getElementById('estado').value = json.data.estado || '';
+
+        console.log('Campos llenados correctamente');
 
     } catch (error) {
-        console.log('Oops, ocurrió un error: ' + error);
+        console.log('Error al editar proveedor:', error);
+        Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Ocurrió un error al cargar los datos del proveedor"
+        });
     }
 }
 
@@ -153,33 +189,45 @@ if (document.querySelector('#frm_edit_proveedor')) {
     frm_proveedor.onsubmit = function (e) {
         e.preventDefault();
         validar_form("actualizar");
-    }
+    };
 }
 
-// Actualizar proveedor
+// ACTUALIZAR PROVEEDOR
 async function actualizarProveedor() {
-    const frm_edit_proveedor = document.querySelector('#frm_edit_proveedor');
-    const datos = new FormData(frm_edit_proveedor);
+    try {
+        const frm_edit_proveedor = document.querySelector('#frm_edit_proveedor');
+        const datos = new FormData(frm_edit_proveedor);
 
-    let respuesta = await fetch(base_url + 'control/UsuarioController.php?tipo=actualizar_proveedor', {
-        method: 'POST',
-        mode: 'cors',
-        cache: 'no-cache',
-        body: datos
-    });
+        let respuesta = await fetch(base_url + 'control/UsuarioController.php?tipo=actualizar_proveedor', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: datos
+        });
 
-    let json = await respuesta.json();
+        let json = await respuesta.json();
 
-    if (!json.status) {
-        alert("Ocurrió un error al actualizar, inténtelo nuevamente");
-        console.log(json.msg);
-    } else {
-        alert(json.msg);
-        window.location.href = base_url + 'proveedores';
+        if (!json.status) {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Ocurrió un error al actualizar. Inténtelo nuevamente."
+            });
+            console.log(json.msg);
+        } else {
+            Swal.fire({
+                icon: "success",
+                title: "Actualizado",
+                text: json.msg
+            });
+            window.location.href = base_url + 'proveedor';
+        }
+    } catch (error) {
+        console.log("Error al actualizar proveedor: " + error);
     }
 }
 
-// Eliminar proveedor
+// ELIMINAR PROVEEDOR
 async function btn_eliminar_proveedor(id) {
     if (confirm("¿Estás seguro de eliminar este proveedor?")) {
         eliminarProveedor(id);
@@ -201,10 +249,18 @@ async function eliminarProveedor(id) {
         let json = await respuesta.json();
 
         if (json.status) {
-            alert(json.msg);
+            Swal.fire({
+                icon: "success",
+                title: "Eliminado",
+                text: json.msg
+            });
             view_proveedor();
         } else {
-            alert(json.msg);
+            Swal.fire({
+                icon: "error",
+                title: "Error al eliminar",
+                text: json.msg
+            });
         }
     } catch (error) {
         console.log("Error al eliminar proveedor: " + error);

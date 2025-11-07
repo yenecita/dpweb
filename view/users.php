@@ -1,7 +1,7 @@
 <div class="container">
 
     <div class="card-header d-flex justify-content-start align-items-center mb-3">
-        <a href="<?= BASE_URL ?>new-user/registro" class="btn btn-primary btn-sm">
+        <a href="<?= BASE_URL ?>new-user" class="btn btn-primary btn-sm">
             <i class="fas fa-list"></i> Nueva+
         </a>
     </div>

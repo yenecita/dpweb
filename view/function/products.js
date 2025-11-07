@@ -137,17 +137,15 @@ if (document.getElementById('content_products')) view_product();
 // Editar producto
 async function edit_product() {
     try {
+        // Obtener el ID del campo oculto (viene de PHP)
         let id_producto = document.getElementById('id_producto').value;
-        if (!id_producto) {
-            const urlParams = new URLSearchParams(window.location.search);
-            id_producto = urlParams.get('id');
-            if (id_producto) document.getElementById('id_producto').value = id_producto;
-        }
 
         if (!id_producto) {
-            console.log('No se encontró ID del producto');
+            console.log('No se encontró ID del producto en el campo oculto');
             return;
         }
+
+        console.log('ID del producto a editar:', id_producto);
 
         const datos = new FormData();
         datos.append('id_producto', id_producto);
@@ -160,22 +158,28 @@ async function edit_product() {
         });
 
         let json = await respuesta.json();
+        console.log('Respuesta del servidor:', json);
+
         if (!json.status) {
-            alert(json.msg);
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: json.msg
+            });
             return;
         }
 
         // Llenar campos con la información del producto
         setTimeout(() => {
-            document.getElementById('id_producto').value = json.data.id;
-            document.getElementById('codigo').value = json.data.codigo;
-            document.getElementById('nombre').value = json.data.nombre;
-            document.getElementById('detalle').value = json.data.detalle;
-            document.getElementById('precio').value = json.data.precio;
-            document.getElementById('stock').value = json.data.stock;
-            document.getElementById('id_categoria').value = json.data.id_categoria;
-            document.getElementById('fecha_vencimiento').value = json.data.fecha_vencimiento;
-            document.getElementById('id_proveedor').value = json.data.id_proveedor;
+            document.getElementById('codigo').value = json.data.codigo || '';
+            document.getElementById('nombre').value = json.data.nombre || '';
+            document.getElementById('detalle').value = json.data.detalle || '';
+            document.getElementById('precio').value = json.data.precio || '';
+            document.getElementById('stock').value = json.data.stock || '';
+            document.getElementById('id_categoria').value = json.data.id_categoria || '';
+            document.getElementById('fecha_vencimiento').value = json.data.fecha_vencimiento || '';
+            document.getElementById('id_proveedor').value = json.data.id_proveedor || '';
+            document.getElementById('estado').value = json.data.estado || '';
 
             // Mostrar imagen actual si existe
             const previewDiv = document.getElementById('current_image_preview');
@@ -190,9 +194,17 @@ async function edit_product() {
                     previewDiv.innerHTML = '<small>No hay imagen actual</small>';
                 }
             }
-        }, 500);
+
+            console.log('Campos llenados correctamente');
+        }, 100);
+
     } catch (error) {
-        console.log('Error al editar producto: ' + error);
+        console.log('Error al editar producto:', error);
+        Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Ocurrió un error al cargar los datos del producto"
+        });
     }
 }
 
