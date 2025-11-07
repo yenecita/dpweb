@@ -1,102 +1,101 @@
-<!-- INICIO DE CUERPO DE PAGINA -->
-<div class="container-fluid">
-    <div class="card">
-        <h5 class="card-header">REGISTRO DE PROVEEDOR</h5>
-        <form id="frm_proveedor" action="" method="POST" enctype="multipart/form-data">
-            <div class="card-body">
 
-                <div class="mb-3 row">
-                    <label for="nro_identidad" class="col-sm-4 col-form-label">Nro Identidad:</label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="nro_identidad" name="nro_identidad" required>
-                    </div>
-                </div>
+  <!-- Bootstrap CSS (opcional) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 
-                <div class="mb-3 row">
-                    <label for="razon_social" class="col-sm-4 col-form-label">Razón Social:</label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="razon_social" name="razon_social" required>
-                    </div>
-                </div>
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-                <div class="mb-3 row">
-                    <label for="telefono" class="col-sm-4 col-form-label">Teléfono:</label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="telefono" name="telefono" required>
-                    </div>
-                </div>
+  <script>
+    // Asegúrate de definir tu variable base_url
+    const base_url = "https://yeny.yahtha.com/";
+  </script>
 
-                <div class="mb-3 row">
-                    <label for="correo" class="col-sm-4 col-form-label">Correo:</label>
-                    <div class="col-sm-8">
-                        <input type="email" class="form-control" id="correo" name="correo" required>
-                    </div>
-                </div>
+</head>
+<body class="bg-light">
 
-                <div class="mb-3 row">
-                    <label for="departamento" class="col-sm-4 col-form-label">Departamento:</label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="departamento" name="departamento" required>
-                    </div>
-                </div>
+  <div class="container mt-5">
+    <div class="card shadow p-4">
+      <h3 class="text-center mb-4">Registro de Proveedor</h3>
 
-                <div class="mb-3 row">
-                    <label for="provincia" class="col-sm-4 col-form-label">Provincia:</label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="provincia" name="provincia" required>
-                    </div>
-                </div>
+      <form id="frm_proveedor">
 
-                <div class="mb-3 row">
-                    <label for="distrito" class="col-sm-4 col-form-label">Distrito:</label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="distrito" name="distrito" required>
-                    </div>
-                </div>
+        <div class="row g-3">
+          <div class="col-md-4">
+            <label class="form-label">N° Identidad *</label>
+            <input type="text" class="form-control" id="nro_identidad" name="nro_identidad" required>
+          </div>
 
-                <div class="mb-3 row">
-                    <label for="cod_postal" class="col-sm-4 col-form-label">Código Postal:</label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="cod_postal" name="cod_postal" required>
-                    </div>
-                </div>
+          <div class="col-md-8">
+            <label class="form-label">Razón Social *</label>
+            <input type="text" class="form-control" id="razon_social" name="razon_social" required>
+          </div>
 
-                <div class="mb-3 row">
-                    <label for="direccion" class="col-sm-4 col-form-label">Dirección:</label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="direccion" name="direccion" required>
-                    </div>
-                </div>
+          <div class="col-md-4">
+            <label class="form-label">Teléfono *</label>
+            <input type="text" class="form-control" id="telefono" name="telefono" required>
+          </div>
 
-                <div class="mb-3 row">
-                    <label for="rol" class="col-sm-4 col-form-label">Rol:</label>
-                    <div class="col-sm-8">
-                        <select class="form-control" name="rol" id="rol" required>
-                            <option value="proveedor">Proveedor</option>
-                        </select>
-                    </div>
-                </div>
+          <div class="col-md-4">
+            <label class="form-label">Correo *</label>
+            <input type="email" class="form-control" id="correo" name="correo" required>
+          </div>
 
-                <div class="mb-3 row">
-                    <label for="estado" class="col-sm-4 col-form-label">Estado:</label>
-                    <div class="col-sm-8">
-                        <select class="form-control" name="estado" id="estado" required>
-                            <option value="1">Activo</option>
-                            <option value="0">Inactivo</option>
-                        </select>
-                    </div>
-                </div>
+          <div class="col-md-4">
+            <label class="form-label">Código Postal *</label>
+            <input type="text" class="form-control" id="cod_postal" name="cod_postal" required>
+          </div>
 
-            </div>
+          <div class="col-md-4">
+            <label class="form-label">Departamento *</label>
+            <input type="text" class="form-control" id="departamento" name="departamento" required>
+          </div>
 
-            <div class="card-footer">
-                <button type="submit" class="btn btn-success">Registrar</button>
-                <button type="reset" class="btn btn-info">Limpiar</button>
-                <a href="<?= BASE_URL ?>proveedor" class="btn btn-danger">Cancelar</a>
-            </div>
-        </form>
+          <div class="col-md-4">
+            <label class="form-label">Provincia *</label>
+            <input type="text" class="form-control" id="provincia" name="provincia" required>
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label">Distrito *</label>
+            <input type="text" class="form-control" id="distrito" name="distrito" required>
+          </div>
+
+          <div class="col-12">
+            <label class="form-label">Dirección *</label>
+            <input type="text" class="form-control" id="direccion" name="direccion" required>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Rol *</label>
+            <select class="form-select" id="rol" name="rol" required>
+              <option value="">Seleccione un rol</option>
+              <option value="proveedor">Proveedor</option>
+              <option value="distribuidor">Distribuidor</option>
+              <option value="mayorista">Mayorista</option>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Estado *</label>
+            <select class="form-select" id="estado" name="estado" required>
+              <option value="">Seleccione estado</option>
+              <option value="1">Activo</option>
+              <option value="0">Inactivo</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="mt-4 text-center">
+          <button type="submit" class="btn btn-success px-4">Registrar</button>
+          <a href="<?= BASE_URL ?>proveedor" class="btn btn-secondary px-4">Cancelar</a>
+        </div>
+
+      </form>
     </div>
-</div>
-<!-- FIN DE CUERPO DE PAGINA -->
+  </div>
 
-<script src="<?php echo BASE_URL; ?>view/function/proveedor.js"></script>
+  <!-- Archivo JS -->
+  <script src="assets/js/proveedor.js"></script>
+
+</body>
+</html>
