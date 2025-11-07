@@ -15,9 +15,9 @@ function validar_form(tipo) {
 
     // Validar campos vacíos
     if (
-        nro_identidad == "" || razon_social == "" || telefono == "" || correo == "" ||
-        departamento == "" || provincia == "" || distrito == "" || cod_postal == "" ||
-        direccion == "" || rol == "" || estado == ""
+        nro_identidad === "" || razon_social === "" || telefono === "" || correo === "" ||
+        departamento === "" || provincia === "" || distrito === "" || cod_postal === "" ||
+        direccion === "" || rol === "" || estado === ""
     ) {
         Swal.fire({
             icon: "error",
