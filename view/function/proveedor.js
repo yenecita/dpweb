@@ -94,7 +94,7 @@ async function view_proveedor() {
             json.data.forEach((proveedor, index) => {
                 html += `
                 <tr>
-                    <td>${index + 1}</td>
+                    <td>${proveedor.id}</td>
                     <td>${proveedor.nro_identidad || ''}</td>
                     <td>${proveedor.razon_social || ''}</td>
                     <td>${proveedor.telefono || ''}</td>
@@ -127,6 +127,17 @@ if (document.getElementById('content_proveedor')) {
 async function edit_proveedor() {
     try {
         let id_persona = document.getElementById('id_persona').value;
+        if (!id_persona) {
+            const urlParams = new URLSearchParams(window.location.search);
+            id_persona = urlParams.get('id');
+            if (id_persona) document.getElementById('id_persona').value = id_persona;
+        }
+
+        if (!id_persona) {
+            console.log('No se encontró ID del proveedor');
+            return;
+        }
+
         const datos = new FormData();
         datos.append('id_persona', id_persona);
 
@@ -144,17 +155,20 @@ async function edit_proveedor() {
             return;
         }
 
-        document.getElementById('nro_identidad').value = json.data.nro_identidad;
-        document.getElementById('razon_social').value = json.data.razon_social;
-        document.getElementById('telefono').value = json.data.telefono;
-        document.getElementById('correo').value = json.data.correo;
-        document.getElementById('departamento').value = json.data.departamento;
-        document.getElementById('provincia').value = json.data.provincia;
-        document.getElementById('distrito').value = json.data.distrito;
-        document.getElementById('cod_postal').value = json.data.cod_postal;
-        document.getElementById('direccion').value = json.data.direccion;
-        document.getElementById('rol').value = json.data.rol;
-        document.getElementById('estado').value = json.data.estado;
+        // Llenar campos con la información del proveedor
+        setTimeout(() => {
+            document.getElementById('nro_identidad').value = json.data.nro_identidad;
+            document.getElementById('razon_social').value = json.data.razon_social;
+            document.getElementById('telefono').value = json.data.telefono;
+            document.getElementById('correo').value = json.data.correo;
+            document.getElementById('departamento').value = json.data.departamento;
+            document.getElementById('provincia').value = json.data.provincia;
+            document.getElementById('distrito').value = json.data.distrito;
+            document.getElementById('cod_postal').value = json.data.cod_postal;
+            document.getElementById('direccion').value = json.data.direccion;
+            document.getElementById('rol').value = json.data.rol;
+            document.getElementById('estado').value = json.data.estado;
+        }, 500);
 
     } catch (error) {
         console.log('Oops, ocurrió un error: ' + error);
