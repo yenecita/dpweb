@@ -1,8 +1,9 @@
 <div class="container">
     <div class="card-header d-flex justify-content-start align-items-center mb-3">
-        <a href="<?= BASE_URL ?>new-proveedor" class="btn btn-primary btn-sm">
+        <a href="<?php echo BASE_URL; ?>new-proveedor" class="btn btn-primary btn-sm">
             <i class="fas fa-list"></i> Nueva+
         </a>
+        
     </div>
 
     <h4 class="mt-3 mb-3">LISTA DE PROVEEDORES</h4>
