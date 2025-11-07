@@ -170,33 +170,33 @@ async function edit_product() {
         }
 
         // Llenar campos con la información del producto
-        document.getElementById('codigo').value = json.data.codigo || '';
-        document.getElementById('nombre').value = json.data.nombre || '';
-        document.getElementById('detalle').value = json.data.detalle || '';
-        document.getElementById('precio').value = json.data.precio || '';
-        document.getElementById('stock').value = json.data.stock || '';
-        document.getElementById('id_categoria').value = json.data.id_categoria || '';
-        document.getElementById('fecha_vencimiento').value = json.data.fecha_vencimiento || '';
-        document.getElementById('id_proveedor').value = json.data.id_proveedor || '';
-        document.getElementById('estado').value = json.data.estado || '';
+        setTimeout(() => {
+            document.getElementById('codigo').value = json.data.codigo || '';
+            document.getElementById('nombre').value = json.data.nombre || '';
+            document.getElementById('detalle').value = json.data.detalle || '';
+            document.getElementById('precio').value = json.data.precio || '';
+            document.getElementById('stock').value = json.data.stock || '';
+            document.getElementById('id_categoria').value = json.data.id_categoria || '';
+            document.getElementById('fecha_vencimiento').value = json.data.fecha_vencimiento || '';
+            document.getElementById('id_proveedor').value = json.data.id_proveedor || '';
+            document.getElementById('estado').value = json.data.estado || '';
 
-        // Mostrar imagen actual si existe
-        const previewDiv = document.getElementById('current_image_preview');
-        if (previewDiv) {
-            if (json.data.imagen) {
-                loadImageAsBase64(base_url + json.data.imagen).then(base64 => {
-                    if (base64) {
-                        previewDiv.innerHTML = '<img src="' + base64 + '" style="max-width: 200px; max-height: 200px;" alt="Imagen actual">';
-                    } else {
-                        previewDiv.innerHTML = '<small>No hay imagen actual</small>';
-                    }
-                });
-            } else {
-                previewDiv.innerHTML = '<small>No hay imagen actual</small>';
+            // Mostrar imagen actual si existe
+            const previewDiv = document.getElementById('current_image_preview');
+            if (previewDiv) {
+                if (json.data.imagen) {
+                    loadImageAsBase64(base_url + json.data.imagen).then(base64 => {
+                        previewDiv.innerHTML = base64
+                            ? 'Imagen del producto'
+                            : '<small>No hay imagen actual</small>';
+                    });
+                } else {
+                    previewDiv.innerHTML = '<small>No hay imagen actual</small>';
+                }
             }
-        }
 
-        console.log('Campos llenados correctamente');
+            console.log('Campos llenados correctamente');
+        }, 100);
 
     } catch (error) {
         console.log('Error al editar producto:', error);
