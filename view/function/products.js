@@ -185,9 +185,11 @@ async function edit_product() {
         if (previewDiv) {
             if (json.data.imagen) {
                 loadImageAsBase64(base_url + json.data.imagen).then(base64 => {
-                    previewDiv.innerHTML = base64
-                        ? 'Imagen del producto'
-                        : '<small>No hay imagen actual</small>';
+                    if (base64) {
+                        previewDiv.innerHTML = '<img src="' + base64 + '" style="max-width: 200px; max-height: 200px;" alt="Imagen actual">';
+                    } else {
+                        previewDiv.innerHTML = '<small>No hay imagen actual</small>';
+                    }
                 });
             } else {
                 previewDiv.innerHTML = '<small>No hay imagen actual</small>';
