@@ -49,10 +49,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="<?php echo BASE_URL; ?>proveedor">Proveedor</a>
                     </li>
-                     <li class="nav-item">
-                        <a class="nav-link" href="<?php echo BASE_URL; ?>new-proveedor">Proveedor</a>
-                    </li>
-
+              
                     <li class="nav-item">
                         <a class="nav-link" href="#">Sales</a>
                     </li>
