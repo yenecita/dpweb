@@ -17,7 +17,8 @@ if ($tipo == "registrar") {
     $rol = $_POST['rol'];
     $estado = $_POST['estado'];
     $editor = $_POST['editor'] ?? null;
-    $password = password_hash($nro_identidad, PASSWORD_DEFAULT);
+    // Proveedores no necesitan password
+    $password = ($rol == 'proveedor') ? null : password_hash($nro_identidad, PASSWORD_DEFAULT);
 
     if (
         $nro_identidad == "" || $razon_social == "" || $telefono == "" || $correo == "" ||
@@ -125,14 +126,20 @@ if ($tipo == "actualizar_proveedor") {
         if (!$existeID) {
             $arrResponse = array('status' => false, 'msg' => 'Error, proveedor no existe');
         } else {
-            $actualizar = $objPersona->actualizar(
-                $id_persona, $nro_identidad, $razon_social, $telefono, $correo,
-                $departamento, $provincia, $distrito, $cod_postal, $direccion, $rol, $estado
-            );
-            if ($actualizar) {
-                $arrResponse = array('status' => true, 'msg' => 'Proveedor actualizado correctamente');
+            // Verificar unicidad del nro_identidad para otros proveedores
+            $existeOtro = $objPersona->existePersonaOtro($nro_identidad, $id_persona);
+            if ($existeOtro > 0) {
+                $arrResponse = array('status' => false, 'msg' => 'Error, nro de documento ya existe para otro proveedor');
             } else {
-                $arrResponse = array('status' => false, 'msg' => 'Error al actualizar');
+                $actualizar = $objPersona->actualizar(
+                    $id_persona, $nro_identidad, $razon_social, $telefono, $correo,
+                    $departamento, $provincia, $distrito, $cod_postal, $direccion, $rol, $estado
+                );
+                if ($actualizar) {
+                    $arrResponse = array('status' => true, 'msg' => 'Proveedor actualizado correctamente');
+                } else {
+                    $arrResponse = array('status' => false, 'msg' => 'Error al actualizar');
+                }
             }
         }
     }
@@ -141,11 +148,17 @@ if ($tipo == "actualizar_proveedor") {
 
 if ($tipo == "eliminar_proveedor") {
     $id_persona = $_POST['id_persona'];
-    $resultado = $objPersona->eliminar($id_persona);
-    if ($resultado) {
-        $arrResponse = array('status' => true, 'msg' => 'Proveedor eliminado correctamente');
+    // Verificar si el proveedor está asociado a productos
+    $tieneProductos = $objPersona->proveedorTieneProductos($id_persona);
+    if ($tieneProductos > 0) {
+        $arrResponse = array('status' => false, 'msg' => 'No se puede eliminar el proveedor porque tiene productos asociados');
     } else {
-        $arrResponse = array('status' => false, 'msg' => 'Error al eliminar');
+        $resultado = $objPersona->eliminar($id_persona);
+        if ($resultado) {
+            $arrResponse = array('status' => true, 'msg' => 'Proveedor eliminado correctamente');
+        } else {
+            $arrResponse = array('status' => false, 'msg' => 'Error al eliminar');
+        }
     }
     echo json_encode($arrResponse);
 }
@@ -211,6 +224,18 @@ if ($tipo == "eliminar") {
         $arrResponse = array('status' => false, 'msg' => 'Error al eliminar');
     }
     echo json_encode($arrResponse);
+}
+
+if ($tipo == "verificar_nro_identidad") {
+    $nro_identidad = $_POST['nro_identidad'];
+    $id_persona = $_POST['id_persona'];
+    $existeOtro = $objPersona->existePersonaOtro($nro_identidad, $id_persona);
+    if ($existeOtro > 0) {
+        $respuesta = array('status' => false, 'msg' => 'Error, nro de documento ya existe para otro proveedor');
+    } else {
+        $respuesta = array('status' => true, 'msg' => 'Nro de documento disponible');
+    }
+    echo json_encode($respuesta);
 }
 
 if ($tipo == "ver_client") {

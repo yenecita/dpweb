@@ -26,9 +26,30 @@ class UsuarioModel
 
     public function existePersona($nro_identidad)
     {
-        $consulta = "SELECT * FROM persona WHERE nro_identidad='$nro_identidad'";
-        $sql = $this->conexion->query($consulta);
-        return $sql->num_rows;
+        $stmt = $this->conexion->prepare("SELECT * FROM persona WHERE nro_identidad=?");
+        $stmt->bind_param("s", $nro_identidad);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->num_rows;
+    }
+
+    public function existePersonaOtro($nro_identidad, $id_persona)
+    {
+        $stmt = $this->conexion->prepare("SELECT * FROM persona WHERE nro_identidad=? AND id!=?");
+        $stmt->bind_param("si", $nro_identidad, $id_persona);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->num_rows;
+    }
+
+    public function proveedorTieneProductos($id_persona)
+    {
+        $stmt = $this->conexion->prepare("SELECT COUNT(*) as total FROM productos WHERE id_proveedor=?");
+        $stmt->bind_param("i", $id_persona);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        return $row['total'];
     }
 
     public function buscarPersonaPorNroIdentidad($nro_identidad)
