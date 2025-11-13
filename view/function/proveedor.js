@@ -199,6 +199,27 @@ async function actualizarProveedor() {
         const frm_edit_proveedor = document.querySelector('#frm_edit_proveedor');
         const datos = new FormData(frm_edit_proveedor);
 
+        // Verificar unicidad del nro_identidad antes de enviar
+        let nro_identidad = document.getElementById('nro_identidad').value;
+        let id_persona = document.getElementById('id_persona').value;
+
+        let checkResponse = await fetch(base_url + 'control/UsuarioController.php?tipo=verificar_nro_identidad', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: new FormData(frm_edit_proveedor)
+        });
+
+        let checkJson = await checkResponse.json();
+        if (!checkJson.status) {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: checkJson.msg
+            });
+            return;
+        }
+
         let respuesta = await fetch(base_url + 'control/UsuarioController.php?tipo=actualizar_proveedor', {
             method: 'POST',
             mode: 'cors',
@@ -212,7 +233,7 @@ async function actualizarProveedor() {
             Swal.fire({
                 icon: "error",
                 title: "Error",
-                text: "Ocurrió un error al actualizar. Inténtelo nuevamente."
+                text: json.msg
             });
             console.log(json.msg);
         } else {
