@@ -18,8 +18,8 @@
                 <th style="text-align: center;">Stock</th>
                 <th style="text-align: center;">Categoría</th>
                 <th style="text-align: center;">Fecha Vencimiento</th>
+                <th style="text-align: center;">Codigó de barra</th>
                 <th style="text-align: center;">Proveedor</th>
-                <th style="text-align: center;">Imagen</th>
                 <th style="text-align: center;">Acción</th>
             </tr>
         </thead>
@@ -30,3 +30,4 @@
 </div>
 
 <script src="<?= BASE_URL ?>view/function/products.js"></script>
+<script src="<?= BASE_URL ?>view/function/JsBarcode.all.min.js"></script>

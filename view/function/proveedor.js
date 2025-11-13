@@ -106,6 +106,7 @@ async function view_proveedor() {
                         <button class="btn btn-danger" onclick="btn_eliminar_proveedor(${proveedor.id});">Eliminar</button>
                     </td>
                 </tr>`;
+                
             });
             contenido.innerHTML = html;
         } else {

@@ -94,7 +94,7 @@ async function view_product() {
             let html = '';
             // Cargar imágenes en paralelo
             const imagePromises = json.data.map(async (product, index) => {
-                let imagenHtml = 'Sin imagen';
+                let imagenHtml = '';
                 if (product.imagen) {
                     const base64 = await loadImageAsBase64(base_url + product.imagen);
                     if (base64) {
@@ -111,13 +111,14 @@ async function view_product() {
                     <td>${product.stock || ''}</td>
                     <td>${product.categoria || 'Sin categoría'}</td>
                     <td>${product.fecha_vencimiento || ''}</td>
+                    <td><svg id="barcode${product.id}"></svg></td>
                     <td>${product.id_proveedor || ''}</td>
-                    <td>${imagenHtml}</td>
                     <td style="text-align:center;">
                         <button onclick="window.location.href='${base_url}edit-product/${product.id}'" class="btn btn-primary btn-sm">Editar</button>
                         <button onclick="btn_eliminar(${product.id});" class="btn btn-danger btn-sm">Eliminar</button>
                     </td>
                 </tr>`;
+
             });
             const rows = await Promise.all(imagePromises);
             html = rows.join('');
@@ -125,6 +126,17 @@ async function view_product() {
         } else {
             document.getElementById('content_products').innerHTML = '<tr><td colspan="11">No hay productos disponibles</td></tr>';
         }
+        // grafico de barras
+        json.data.forEach(product => {
+            JsBarcode("#barcode" + product.id, "" + product.codigo, {
+                with: 2,
+                height: 40,
+                lineColor: "rgba(96, 158, 164, 1)",
+            });
+
+
+        });
+
     } catch (error) {
         console.error("Error al obtener productos:", error);
         document.getElementById('content_products').innerHTML = '<tr><td colspan="11">Error al cargar los productos</td></tr>';
@@ -317,3 +329,234 @@ async function cargar_proveedor() {
         console.log('Error cargando proveedores:', error);
     }
 }
+
+
+// vista Compatible con tu product.js actual
+
+let allProducts = [];
+let carrito = [];
+
+// Al cargar la página
+document.addEventListener('DOMContentLoaded', function () {
+    cargarProductosParaVenta();
+    cargarCarritoDesdeStorage();
+    agregarBuscador();
+});
+
+// 1. CARGAR PRODUCTOS DESDE TU BD
+async function cargarProductosParaVenta() {
+    try {
+        const respuesta = await fetch(base_url + 'control/productsControl.php?tipo=ver_productos', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache'
+        });
+
+        if (!respuesta.ok) throw new Error("Error del servidor");
+
+        const json = await respuesta.json();
+
+        if (json.status && json.data) {
+            allProducts = json.data;
+            mostrarProductosEnVenta(allProducts);
+        } else {
+            document.getElementById('productos_venta').innerHTML = `
+                <div class="col-12 text-center py-5 text-muted">
+                    <i class="fas fa-box-open fa-4x mb-3"></i>
+                    <p>No hay productos disponibles</p>
+                </div>`;
+        }
+    } catch (err) {
+        console.error(err);
+        document.getElementById('productos_venta').innerHTML = `
+            <div class="alert alert-danger">Error al cargar productos</div>`;
+    }
+}
+
+// 2. MOSTRAR PRODUCTOS EN TARJETAS (para venta)
+function mostrarProductosEnVenta(productos) {
+    const contenedor = document.getElementById('productos_venta');
+    contenedor.innerHTML = productos.map(p => {
+        const img = p.imagen ? base_url + p.imagen : 'https://via.placeholder.com/300x200/eee/999?text=Sin+Imagen';
+        const disabled = p.stock <= 0 ? 'disabled' : '';
+
+        return `
+        <div class="col-6 col-md-4 col-lg-3 mb-3">
+            <div class="card h-100 shadow-sm">
+                <img src="${img}" class="card-img-top" alt="${p.nombre}" style="height:140px; object-fit:cover;">
+                <div class="card-body d-flex flex-column">
+                    <h6 class="card-title text-truncate mb-1">${p.nombre}</h6>
+                    <p class="text-muted small mb-1">${p.categoria || 'Sin categoría'}</p>
+                    <p class="fw-bold text-success mb-1">S/ ${parseFloat(p.precio).toFixed(2)}</p>
+                    <small class="text-${p.stock > 0 ? 'success' : 'danger'}">Stock: ${p.stock}</small>
+                    <button onclick="agregarAlCarritoVenta(${p.id})" 
+                            class="btn btn-success btn-sm mt-2" ${disabled}>
+                        <i class="fas fa-cart-plus"></i> Agregar
+                    </button>
+                </div>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+// 3. AGREGAR AL CARRITO DE VENTA
+function agregarAlCarritoVenta(id) {
+    const producto = allProducts.find(p => p.id == id);
+    if (!producto || producto.stock <= 0) {
+        Swal.fire('Sin stock', 'Este producto no tiene unidades disponibles', 'warning');
+        return;
+    }
+
+    const existe = carrito.find(item => item.id == id);
+    if (existe) {
+        if (existe.cantidad >= producto.stock) {
+            Swal.fire('Límite', 'No hay más unidades en stock', 'info');
+            return;
+        }
+        existe.cantidad++;
+    } else {
+        carrito.push({ ...producto, cantidad: 1 });
+    }
+
+    actualizarListaCompra();
+    guardarCarrito();
+    Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: '¡Agregado!',
+        text: `${producto.nombre} ×1`,
+        showConfirmButton: false,
+        timer: 1000,
+        toast: true
+    });
+}
+
+// 4. ACTUALIZAR TABLA DE COMPRA
+function actualizarListaCompra() {
+    const tbody = document.getElementById('lista_compra');
+    const subtotalEl = document.querySelector('.text-end h4:nth-child(1) label');
+    const igvEl = document.querySelector('.text-end h4:nth-child(2) label');
+    const totalEl = document.querySelector('.text-end h4:nth-child(3) label');
+
+    if (carrito.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="text-center text-muted py-5">Carrito vacío</td></tr>`;
+        subtotalEl.textContent = 'S/ 0.00';
+        igvEl.textContent = 'S/ 0.00';
+        totalEl.textContent = 'S/ 0.00';
+        return;
+    }
+
+    let subtotal = 0;
+    tbody.innerHTML = carrito.map((item, i) => {
+        const totalLinea = item.precio * item.cantidad;
+        subtotal += totalLinea;
+
+        return `
+        <tr>
+            <td class="text-truncate" style="max-width: 120px;">${item.nombre}</td>
+            <td>
+                <div class="btn-group btn-group-sm">
+                    <button class="btn btn-outline-secondary" onclick="cambiarCantidad(${i}, -1)">−</button>
+                    <span class="btn btn-light">${item.cantidad}</span>
+                    <button class="btn btn-outline-secondary" onclick="cambiarCantidad(${i}, 1)">+</button>
+                </div>
+            </td>
+            <td>S/ ${parseFloat(item.precio).toFixed(2)}</td>
+            <td class="text-success fw-bold">S/ ${totalLinea.toFixed(2)}</td>
+            <td>
+                <button class="btn btn-danger btn-sm" onclick="eliminarItem(${i})">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </td>
+        </tr>`;
+    }).join('');
+
+    const igv = subtotal * 0.18;
+    const total = subtotal + igv;
+
+    subtotalEl.textContent = `S/ ${subtotal.toFixed(2)}`;
+    igvEl.textContent = `S/ ${igv.toFixed(2)}`;
+    totalEl.textContent = `S/ ${total.toFixed(2)}`;
+}
+
+// 5. CAMBIAR CANTIDAD
+function cambiarCantidad(index, cambio) {
+    const item = carrito[index];
+    const stockMax = allProducts.find(p => p.id == item.id)?.stock || 0;
+    const nueva = item.cantidad + cambio;
+
+    if (nueva > stockMax) {
+        Swal.fire('Stock insuficiente', `Solo hay ${stockMax} disponibles`, 'warning');
+        return;
+    }
+    if (nueva <= 0) {
+        eliminarItem(index);
+    } else {
+        item.cantidad = nueva;
+        actualizarListaCompra();
+        guardarCarrito();
+    }
+}
+
+// 6. ELIMINAR ITEM
+function eliminarItem(index) {
+    carrito.splice(index, 1);
+    actualizarListaCompra();
+    guardarCarrito();
+}
+
+// 7. LOCALSTORAGE (no se pierde al recargar)
+function guardarCarrito() {
+    localStorage.setItem('carrito_venta_tmp', JSON.stringify(carrito));
+}
+
+function cargarCarritoDesdeStorage() {
+    const saved = localStorage.getItem('carrito_venta_tmp');
+    if (saved) {
+        carrito = JSON.parse(saved);
+        actualizarListaCompra();
+    }
+}
+
+// 8. REALIZAR VENTA
+function realizarVenta() {
+    if (carrito.length === 0) {
+        Swal.fire('Carrito vacío', 'Agrega productos para continuar', 'warning');
+        return;
+    }
+
+    // Guardar carrito para procesar en PHP
+    localStorage.setItem('carrito_para_vender', JSON.stringify(carrito));
+    localStorage.removeItem('carrito_venta_tmp'); // limpiar temporal
+
+    // Redirigir al controlador de venta
+    window.location.href = base_url + 'venta/registrar';
+}
+
+// 9. BUSCADOR EN TIEMPO REAL
+function agregarBuscador() {
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'form-control mb-3';
+    input.placeholder = 'Buscar producto...';
+    input.id = 'buscar_producto_venta';
+
+    document.querySelector('#productos_venta').before(input);
+
+    input.addEventListener('input', function () {
+        const texto = this.value.toLowerCase();
+        const filtrados = allProducts.filter(p =>
+            p.nombre.toLowerCase().includes(texto) ||
+            p.categoria.toLowerCase().includes(texto) ||
+            (p.detalle && p.detalle.toLowerCase().includes(texto))
+        );
+        mostrarProductosEnVenta(filtrados);
+    });
+}
+
+// Exponer función global para el botón
+window.realizarVenta = realizarVenta;
+
+
+
+
