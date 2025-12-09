@@ -179,3 +179,19 @@ if ($tipo == "actualizar") {
     }
     echo json_encode($arrResponse);
 }
+if ($tipo == "buscar_producto_venta") {
+    $dato = $_POST['dato'];
+    $respuesta = array('status' => false, 'msg' => 'fallo el controlador');
+    $productos = $objProducto->BuscarProductoByNombreOrCodigo($dato);
+    $arrProduct = array();
+    if (count($productos)) {
+        foreach ($productos as $producto) {
+            $categoria = $objCategoria->ver($producto->id_categoria);
+            $producto->categoria = $categoria->nombre;
+            array_push($arrProduct, $producto);
+         }
+        $respuesta = array('status' => true, 'msg' => '', 'data' => $arrProduct);
+    }
+    echo json_encode($respuesta);
+    
+}

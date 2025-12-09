@@ -34,10 +34,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="<?php echo BASE_URL; ?>product">Products</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="<?php echo BASE_URL; ?>vista-cliente">vista clients</a>
-                    </li>
-
+                   
                     <li class="nav-item">
                         <a class="nav-link" href="<?php echo BASE_URL; ?>categoria">Categories</a>
                     </li>
@@ -50,16 +47,8 @@
                         <a class="nav-link" href="<?php echo BASE_URL; ?>proveedor">Proveedor</a>
                     </li>
 
-                     <li class="nav-item">
-                        <a class="nav-link" href="<?php echo BASE_URL; ?>venta">Venta</a>
-                    </li>
-
                     <li class="nav-item">
-                        <a class="nav-link" href="<?php echo BASE_URL; ?>venta">Venta</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Sales</a>
+                        <a class="nav-link" href="<?php echo BASE_URL; ?>vista-cliente">Sales</a>
                     </li>
 
                     <li class="nav-item">

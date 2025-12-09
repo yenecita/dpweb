@@ -116,4 +116,20 @@ class ProductsModel
         $resultado = $sql->fetch_object();
         return $resultado->total;
     }
+    public function buscarProductoByNombreOrCodigo($dato){
+        $arr_productos = array();
+        $consulta = "SELECT * FROM producto WHERE codigo LIKE '%$dato%' OR  detalle LIKE '%$dato%'";
+        $sql = $this->conexion->query($consulta);
+        while ($objeto = $sql->fetch_object()) {
+            array_push($arr_productos, $objeto);
+        }
+        return $arr_productos;
+    }
+
+    public function actualizarStock($id_producto, $cantidad_vendida) {
+        $consulta = "UPDATE producto SET stock = stock - $cantidad_vendida WHERE id = $id_producto";
+        $sql = $this->conexion->query($consulta);
+        return $sql;
+    }
 }
+
