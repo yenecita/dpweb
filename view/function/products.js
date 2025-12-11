@@ -403,7 +403,8 @@ async function listar_productos_venta() {
 
             </div>`;*/
              `
-        <div class="card m-2 col-12" style="text-align:center;">
+        
+             <div class="card m-2 col-12" style="text-align:center;">
 
         <!-- Contenedor para que la imagen no se deforme -->
         <div style="

@@ -127,7 +127,7 @@ class ProductsModel
     }
 
     public function actualizarStock($id_producto, $cantidad_vendida) {
-        $consulta = "UPDATE producto SET stock = stock - $cantidad_vendida WHERE id = $id_producto";
+        $consulta = "UPDATE productos SET stock = stock - $cantidad_vendida WHERE id = $id_producto";
         $sql = $this->conexion->query($consulta);
         return $sql;
     }
