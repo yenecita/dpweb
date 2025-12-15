@@ -28,7 +28,7 @@ if ($tipo == "registrarTemporal") {
 
 if ($tipo == "listar_venta_temporal") {
     $respuesta = array('status' => false, 'msg' => 'fallo el controlador');
-    $b_productos = $objVenta->buscarTemporales();
+    $b_producto = $objVenta->buscarTemporales();
     if ($b_producto) {
         $respuesta = array('status' => true, 'data' => $b_producto);
     } else {
