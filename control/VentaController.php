@@ -15,7 +15,7 @@ if ($tipo == "registrarTemporal") {
 
     $b_producto = $objVenta->buscarTemporal($id_producto);
     if ($b_producto) {
-        $n_cantidad = $b_producto->cantidad + 1;
+        $n_cantidad = $b_producto->cantidad+1;
         $objVenta->actualizarCantidadTemporal($id_producto, $n_cantidad);
         $respuesta = array('status' => true, 'msg' => 'actualizado');
     } else {
