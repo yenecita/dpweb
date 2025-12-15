@@ -108,17 +108,9 @@ class ProductsModel
         $sql = $this->conexion->query($consulta);
         return $sql;
     }
-
-    public function contarProductosPorCategoria($id_categoria)
-    {
-        $consulta = "SELECT COUNT(*) as total FROM producto WHERE id_categoria='$id_categoria'";
-        $sql = $this->conexion->query($consulta);
-        $resultado = $sql->fetch_object();
-        return $resultado->total;
-    }
     public function buscarProductoByNombreOrCodigo($dato){
         $arr_productos = array();
-        $consulta = "SELECT * FROM producto WHERE codigo LIKE '%$dato%' OR  detalle LIKE '%$dato%'";
+        $consulta = "SELECT * FROM producto WHERE codigo LIKE '$dato%' OR nombre LIKE '%$dato%' OR  detalle LIKE '%$dato%'";
         $sql = $this->conexion->query($consulta);
         while ($objeto = $sql->fetch_object()) {
             array_push($arr_productos, $objeto);
@@ -126,10 +118,5 @@ class ProductsModel
         return $arr_productos;
     }
 
-    public function actualizarStock($id_producto, $cantidad_vendida) {
-        $consulta = "UPDATE productos SET stock = stock - $cantidad_vendida WHERE id = $id_producto";
-        $sql = $this->conexion->query($consulta);
-        return $sql;
-    }
 }
 

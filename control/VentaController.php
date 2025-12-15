@@ -5,7 +5,7 @@ require_once("../model/ProductsModel.php");
 $objProducto = new ProductsModel();
 $objVenta = new VentaModel();
 
-$tipo = $_GET['tipo'];
+$tipo = isset($_GET['tipo']) ? $_GET['tipo'] : '';
 
 if ($tipo == "registrarTemporal") {
     $respuesta = array('status' => false, 'msg' => 'fallo el controlador');
@@ -25,45 +25,50 @@ if ($tipo == "registrarTemporal") {
     echo json_encode($respuesta);
 }
 
-if ($tipo == "ver_temporal") {
-    $productos = $objVenta->verTemporal();
-    $respuesta = array('status' => true, 'msg' => '', 'data' => $productos);
+
+if ($tipo == "listar_venta_temporal" || $tipo == "listar_venta_Temporal") {
+    $respuesta = array('status' => false, 'msg' => 'fallo el controlador');
+    $b_productos = $objVenta->buscarTemporales();
+    if ($b_productos && count($b_productos) > 0) {
+        $respuesta = array('status' => true, 'data' => $b_productos);
+    } else {
+        $respuesta = array('status' => false, 'msg' => 'no se encontraron datos');
+    }
     echo json_encode($respuesta);
 }
 
-if ($tipo == "eliminarTemporal") {
-    $id_producto = $_POST['id_producto'];
-    $resultado = $objVenta->eliminarTemporal($id_producto);
-    if ($resultado) {
-        $respuesta = array('status' => true, 'msg' => 'Producto eliminado de la lista');
+// Devuelve los temporales (usado para calcular subtotal/igv/total en el frontend)
+if ($tipo == "subtotal_temporal") {
+    $respuesta = array('status' => false, 'msg' => 'fallo el controlador');
+    $b_productos = $objVenta->buscarTemporales();
+    if ($b_productos) {
+        $respuesta = array('status' => true, 'data' => $b_productos);
+    } else {
+        $respuesta = array('status' => false, 'msg' => 'no se encontraron datos');
+    }
+    echo json_encode($respuesta);
+}
+
+if ($tipo=="actualizar_cantidad") {
+    $id = $_POST['id'];
+    $cantidad = $_POST['cantidad'];
+    $respuesta = array('status' => false, 'msg' => 'fallo el controlador');
+    $consulta = $objVenta->actualizarCantidadTemporalByid($id, $cantidad);
+    if($consulta) {
+        $respuesta = array('status' => true, 'msg' => 'success');
+    }else {
+        $respuesta = array('status' => false, 'msg' => 'Error');
+    }
+    echo json_encode($respuesta);
+}
+if ($tipo == "eliminar_temporal") {
+    $id = $_POST['id'];
+    $respuesta = array('status' => false, 'msg' => 'fallo el controlador');
+    $consulta = $objVenta->eliminarTemporal($id);
+    if ($consulta) {
+        $respuesta = array('status' => true, 'msg' => 'eliminado');
     } else {
         $respuesta = array('status' => false, 'msg' => 'Error al eliminar');
     }
     echo json_encode($respuesta);
 }
-
-if ($tipo == "registrarVenta") {
-    $productos_temporal = $objVenta->verTemporal();
-    if (count($productos_temporal) > 0) {
-        $total = 0;
-        foreach ($productos_temporal as $item) {
-            $total += $item->precio * $item->cantidad;
-        }
-        $id_venta = $objVenta->registrarVenta($total);
-        if ($id_venta > 0) {
-            foreach ($productos_temporal as $item) {
-                $objVenta->registrarDetalle($id_venta, $item->id_producto, $item->cantidad, $item->precio);
-                // Actualizar stock
-                $objProducto->actualizarStock($item->id_producto, $item->cantidad);
-            }
-            $objVenta->limpiarTemporal();
-            $respuesta = array('status' => true, 'msg' => 'Venta registrada correctamente');
-        } else {
-            $respuesta = array('status' => false, 'msg' => 'Error al registrar venta');
-        }
-    } else {
-        $respuesta = array('status' => false, 'msg' => 'No hay productos en la lista');
-    }
-    echo json_encode($respuesta);
-}
-?>

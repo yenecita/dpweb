@@ -359,7 +359,7 @@ async function cargar_proveedor() {
   }
 }
 
-//  Listar productos - vista cliente 
+//  LISTAR PRODUCTOS - VISTA CLIENTE
 
 async function listar_productos_venta() {
   try {
@@ -383,62 +383,20 @@ async function listar_productos_venta() {
       contenidot.innerHTML = ``;
       json.data.forEach((producto) => {
         let product_list = ``;
-        product_list +=/* `
-            <div class="card m-2 col-12 style="text-align:center;">
+        product_list += `
+            <div class="card m-2 col-12">
                 <img src="${
                   base_url + producto.imagen
-                }" alt="" width="100%" height="150px"  height:170px; 
-            display:flex; 
-            justify-content:center; 
-            align-items:center; 
-            overflow:hidden;>
+                }" alt="" width=""100% height="150px">
                 <p class="card-text">${producto.nombre}</p>
                 <p>Precio:${producto.precio}</p>
                 <p>Stock: ${producto.stock}</p>
-
                 <button class="btn btn-primary"
                 onclick="agregar_producto_venta(${producto.id})">
                 Agregar
               </button>
 
-            </div>`;*/
-             `
-        
-             <div class="card m-2 col-12" style="text-align:center;">
-
-        <!-- Contenedor para que la imagen no se deforme -->
-        <div style="
-            width:100%; 
-            height:170px; 
-            display:flex; 
-            justify-content:center; 
-            align-items:center; 
-            overflow:hidden;
-        ">
-            <img src="${base_url + producto.imagen}" 
-                 alt="" 
-                 style="
-                    max-width:100%;
-                    max-height:100%;
-                    object-fit:contain;
-                 ">
-        </div>
-
-        <!-- TEXTO CENTRADO + JUSTIFICADO -->
-        <p class="card-text mt-2" style="text-align:center; font-weight:600;">
-            ${producto.nombre}
-        </p>
-
-        <p style="text-align:center; margin:0;">Precio: ${producto.precio}</p>
-        <p style="text-align:center; margin:0;">Stock: ${producto.stock}</p>
-
-        <button class="btn btn-primary mt-2"
-            onclick="agregar_producto_venta(${producto.id})">
-            Agregar
-        </button>
-    </div>
-`;
-
+            </div>`;
 
         let nueva_fila = document.createElement("div");
         nueva_fila.className = "div col-md-3 col-sm-6 col-xs-12";

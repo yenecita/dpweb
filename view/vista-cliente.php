@@ -1,9 +1,9 @@
 <div class="container-fluid mt-4 row">
     <h2>NUESTROS PRODUCTOS</h2>
-    <div class="col-9">
+    <div class="col-8">
         <div class="card">
             <div class="card-body row">
-                <h5 class="card-title">Busqueda de Productos</h5>
+                <h5 class="card-title col-md-4">Busqueda de Productos</h5>
 
                 
                 <div class="col-md-6">
@@ -15,25 +15,31 @@
                         <input type="hidden" id="producto_cantidad_venta" value="1">
                 </div>
                 <div class="row container-fluid" id="producto_venta">
-                
+                 <!--<div class="card m-2 col-3">
+                        <div class="card-body">
+                            <img src="https://www.agenciaeplus.com.br/wp-content/uploads/2021/12/pagina-de-produto.jpg" alt="" width="100%" height="150px">
+                            <p class="card-text">Descripcion del producto</p>
+                            <button class="btn btn-primary">Agregar</button>
+                        </div>
+                    </div>-->
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-3">
+    <div class="col-4">
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">Lista de Compra</h5>
-                <div class="row" style="min-height: 500px;">
+                <div class="row" style="min-height: auto;">
                     <div class="col-12">
-                        <table class="table">
+                        <table class="table-responsive table table-hover">
                             <thead>
                                 <tr>
                                     <th>Producto</th>
                                     <th>Cantidad</th>
                                     <th>Precio</th>
-                                    <th>Total</th>
-                                    <th>Acciones</th>
+                                    <th>Subtotal</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody id="lista_compra">
@@ -44,9 +50,9 @@
                 </div>
                 <div class="row">
                     <div class="col-12 text-end">
-                        <h4>Subtotal : <label id="subtotal">$0.00</label></h4>
-                        <h4>Igv : <label id="igv">$0.00</label></h4>
-                        <h4>Total : <label id="total">$0.00</label></h4>
+                        <h4>Subtotal : <label id="subtotal_general"></label></h4>
+                        <h4>Igv : <label id="igv_general"></label></h4>
+                        <h4>Total : <label id="total"></label></h4>
                         <button class="btn btn-success" onclick="realizar_venta()">Realizar Venta</button>
                     </div>
                 </div>

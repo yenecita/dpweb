@@ -9,7 +9,8 @@ class VentaModel
         $this->conexion = new Conexion();
         $this->conexion = $this->conexion->connect();
     }
-    public function registrar_temporal($id_producto, $precio, $cantidad){
+    public function registrar_temporal($id_producto, $precio, $cantidad)
+    {
         $consulta = "INSERT INTO temporal_venta (id_producto, precio, cantidad) VALUES ('$id_producto', '$precio', '$cantidad')";
         $sql = $this->conexion->query($consulta);
         if ($sql) {
@@ -17,36 +18,33 @@ class VentaModel
         }
         return 0;
     }
-    public function actualizarCantidadTemporal($id_producto, $cantidad) {
+    public function actualizarCantidadTemporal($id_producto, $cantidad)
+    {
         $consulta = "UPDATE temporal_venta SET cantidad='$cantidad' WHERE id_producto='$id_producto'";
         $sql = $this->conexion->query($consulta);
         return $sql;
     }
-    public function buscarTemporales() 
+    public function actualizarCantidadTemporalByid($id, $cantidad)
     {
-     $arr_temporal = array();
-        $consulta = "SELECT * FROM temporal_venta'";
+        $consulta = "UPDATE temporal_venta SET cantidad='$cantidad' WHERE id='$id'";
+        $sql = $this->conexion->query($consulta);
+        return $sql;
+    }
+    public function buscarTemporales()
+    {
+        $arr_temporal = array();
+        $consulta = "SELECT tv.*, p.nombre FROM temporal_venta tv  INNER JOIN producto p ON tv.id_producto = p.id";
         $sql = $this->conexion->query($consulta);
         while ($objeto = $sql->fetch_object()) {
             array_push($arr_temporal, $objeto);
         }
         return $arr_temporal;
-     
     }
-    public function buscarTemporal($id_producto) {
+    public function buscarTemporal($id_producto)
+    {
         $consulta = "SELECT * FROM temporal_venta WHERE id_producto='$id_producto'";
         $sql = $this->conexion->query($consulta);
         return $sql->fetch_object();
-    }
-
-    public function verTemporal() {
-        $arr_temporal = array();
-        $consulta = "SELECT tv.*, p.nombre FROM temporal_venta tv INNER JOIN producto p ON tv.id_producto = p.id";
-        $sql = $this->conexion->query($consulta);
-        while ($objeto = $sql->fetch_object()) {
-            array_push($arr_temporal, $objeto);
-        }
-        return $arr_temporal;
     }
 
     public function eliminarTemporal($id)
@@ -55,31 +53,13 @@ class VentaModel
         $sql = $this->conexion->query($consulta);
         return $sql;
     }
-    public function eliminarTemporales($id)
+    public function eliminarTemporales()
     {
         $consulta = "DELETE FROM temporal_venta";
         $sql = $this->conexion->query($consulta);
         return $sql;
     }
-
-    public function registrarVenta($total) {
-        $consulta = "INSERT INTO ventas (total) VALUES ($total)";
-        $sql = $this->conexion->query($consulta);
-        if ($sql) {
-            return $this->conexion->insert_id;
-        }
-        return 0;
-    }
-
-    public function registrarDetalle($id_venta, $id_producto, $cantidad, $precio) {
-        $consulta = "INSERT INTO detalle_venta (id_venta, id_producto, cantidad, precio) VALUES ($id_venta, $id_producto, $cantidad, $precio)";
-        $sql = $this->conexion->query($consulta);
-        return $sql;
-    }
-
-    public function limpiarTemporal() {
-        $consulta = "DELETE FROM temporal_venta";
-        $sql = $this->conexion->query($consulta);
-        return $sql;
+    public function listarVentas_Temporal(){
+        
     }
 }
