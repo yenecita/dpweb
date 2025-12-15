@@ -150,6 +150,28 @@ async function eliminar_temporal(id) {
     }
 }
 
+// Realizar venta (limpia temporales y retorna resultado)
+async function realizar_venta() {
+    if (!confirm('¿Desea finalizar la venta?')) return;
+    try {
+        let respuesta = await fetch(base_url + 'control/VentaController.php?tipo=realizar_venta', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache'
+        });
+        let json = await respuesta.json();
+        if (json.status) {
+            alert(json.msg || 'Venta realizada');
+            if (typeof listar_temporales === 'function') listar_temporales();
+        } else {
+            alert(json.msg || 'Error al realizar venta');
+        }
+    } catch (error) {
+        console.log('Error en realizar_venta:', error);
+        alert('Error al procesar la venta. Ver consola.');
+    }
+}
+
 // Wrapper for compatibility: called from products list buttons
 async function agregar_producto_venta(id, precioParam = null, cantidadParam = 1) {
     try {

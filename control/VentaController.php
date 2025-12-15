@@ -72,3 +72,15 @@ if ($tipo == "eliminar_temporal") {
     }
     echo json_encode($respuesta);
 }
+
+if ($tipo == "realizar_venta") {
+    // Implementación simple: eliminar temporales (simula completar la venta)
+    $respuesta = array('status' => false, 'msg' => 'fallo el controlador');
+    $consulta = $objVenta->eliminarTemporales();
+    if ($consulta) {
+        $respuesta = array('status' => true, 'msg' => 'venta realizada');
+    } else {
+        $respuesta = array('status' => false, 'msg' => 'Error al procesar venta');
+    }
+    echo json_encode($respuesta);
+}
