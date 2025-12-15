@@ -16,10 +16,6 @@ producto2.cantidad = 1;
 productos_venta[id] = producto;
 productos_venta[id2] = producto2;
 console.log(productos_venta);
-// cargar la lista al iniciar la vista si existe el contenedor
-if (document.getElementById('lista_compra')) {
-    try { listar_temporales(); } catch (e) { /* ignore */ }
-}
 
 async function agregar_producto_temporal() {
     let id = document.getElementById('id_producto_venta').value;
@@ -44,8 +40,7 @@ async function agregar_producto_temporal() {
             } else {
                 alert("el producto fue actualizado")
             }
-            // refrescar la lista para que se muestre inmediatamente
-            try { listar_temporales(); } catch (e) { console.log('listar_temporales no disponible', e); }
+            
         }
 
     } catch (error) {
@@ -69,8 +64,8 @@ async function listar_temporales() {
                 <td><input type="number" id="cat_${t_venta.id}"value="${t_venta.cantidad}" style="width: 60px;" onkeyup="actualizar_subtotal(${t_venta.id}, ${t_venta.precio});" onchange="actualizar_subtotal(${t_venta.id}, ${t_venta.precio});"></td>
                 <td>S/. ${t_venta.precio}</td>
                 <td id="subtotal_${t_venta.id}">S/. ${t_venta.cantidad * t_venta.precio}</td>
-                <td><button class="btn btn-danger btn-sm" onclick="eliminar_temporal(${t_venta.id})">Eliminar</button></td>
-            </tr>`
+               <td><button class="btn btn-danger btn-sm">Eliminar</button></td>
+               </tr>`
             });
             document.getElementById('lista_compra').innerHTML = listar_temporal;
             act_subt_general();
@@ -127,89 +122,4 @@ async function act_subt_general() {
     }
 }
 
-// Eliminar temporal (llamado desde el botón 'Eliminar')
-async function eliminar_temporal(id) {
-    try {
-        const datos = new FormData();
-        datos.append('id', id);
-        let respuesta = await fetch(base_url + 'control/VentaController.php?tipo=eliminar_temporal', {
-            method: 'POST',
-            mode: 'cors',
-            cache: 'no-cache',
-            body: datos
-        });
-        let json = await respuesta.json();
-        if (json.status) {
-            alert(json.msg || 'Eliminado');
-            if (typeof listar_temporales === 'function') listar_temporales();
-        } else {
-            alert(json.msg || 'Error al eliminar');
-        }
-    } catch (error) {
-        console.log('Error en eliminar_temporal:', error);
-    }
-}
-
-// Realizar venta (limpia temporales y retorna resultado)
-async function realizar_venta() {
-    if (!confirm('¿Desea finalizar la venta?')) return;
-    try {
-        let respuesta = await fetch(base_url + 'control/VentaController.php?tipo=realizar_venta', {
-            method: 'POST',
-            mode: 'cors',
-            cache: 'no-cache'
-        });
-        let json = await respuesta.json();
-        if (json.status) {
-            alert(json.msg || 'Venta realizada');
-            if (typeof listar_temporales === 'function') listar_temporales();
-        } else {
-            alert(json.msg || 'Error al realizar venta');
-        }
-    } catch (error) {
-        console.log('Error en realizar_venta:', error);
-        alert('Error al procesar la venta. Ver consola.');
-    }
-}
-
-// Wrapper for compatibility: called from products list buttons
-async function agregar_producto_venta(id, precioParam = null, cantidadParam = 1) {
-    try {
-        let precio = precioParam;
-        let cantidad = cantidadParam || 1;
-
-        // If price not provided, try to fetch product (fallback)
-        if (precio === null) {
-            const datos = new FormData();
-            datos.append('id_producto', id);
-            let resp = await fetch(base_url + 'control/productsControl.php?tipo=ver', {
-                method: 'POST',
-                mode: 'cors',
-                cache: 'no-cache',
-                body: datos
-            });
-            let json = await resp.json();
-            if (!json.status) {
-                console.log('No se pudo obtener producto:', json.msg);
-                return;
-            }
-            precio = json.data.precio || 0;
-        }
-
-        // Fill hidden inputs if present (follows your model)
-        const elId = document.getElementById('id_producto_venta');
-        const elPrecio = document.getElementById('producto_precio_venta');
-        const elCantidad = document.getElementById('producto_cantidad_venta');
-        if (elId) elId.value = id;
-        if (elPrecio) elPrecio.value = precio;
-        if (elCantidad) elCantidad.value = cantidad;
-
-        // Call the function that reads the hidden inputs and registers the temporal
-        if (typeof agregar_producto_temporal === 'function') {
-            agregar_producto_temporal();
-        }
-    } catch (error) {
-        console.log('Error en agregar_producto_venta:', error);
-    }
-}
-            
+  

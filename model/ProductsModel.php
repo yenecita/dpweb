@@ -82,22 +82,9 @@ class ProductsModel
         return $sql->fetch_object();
     }
 
-    public function actualizar($id_producto, $codigo, $nombre, $detalle, $precio, $stock, $id_categoria, $fecha_vencimiento, $imagen, $id_proveedor)
+     public function actualizar($id_cat, $nombre, $detalle)
     {
-        $codigo            = $this->conexion->real_escape_string($codigo);
-        $nombre            = $this->conexion->real_escape_string($nombre);
-        $detalle           = $this->conexion->real_escape_string($detalle);
-        $precio            = floatval($precio);
-        $stock             = intval($stock);
-        $id_categoria      = intval($id_categoria);
-        $fecha_vencimiento = $this->conexion->real_escape_string($fecha_vencimiento);
-        $imagen            = $this->conexion->real_escape_string($imagen);
-        $id_proveedor      = intval($id_proveedor);
-
-        $consulta = "UPDATE producto 
-                     SET codigo='$codigo', nombre='$nombre', detalle='$detalle', precio=$precio, stock=$stock, 
-                         id_categoria=$id_categoria, fecha_vencimiento='$fecha_vencimiento', imagen='$imagen', id_proveedor=$id_proveedor 
-                     WHERE id=$id_producto";
+        $consulta = "UPDATE producto SET nombre='$nombre', detalle='$detalle' WHERE id='$id_cat'";
         $sql = $this->conexion->query($consulta);
         return $sql;
     }

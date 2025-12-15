@@ -59,6 +59,7 @@ class VentaModel
         $sql = $this->conexion->query($consulta);
         return $sql;
     }
+    
     public function listarVentas_Temporal(){
         $arr_ventas = array();
         $consulta = "SELECT tv.*, p.nombre FROM temporal_venta tv INNER JOIN producto p ON tv.id_producto = p.id";
@@ -69,4 +70,5 @@ class VentaModel
         return $arr_ventas;
         
     }
+    //--------------------ventas registradas--------------------
 }

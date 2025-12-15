@@ -26,23 +26,11 @@ if ($tipo == "registrarTemporal") {
 }
 
 
-if ($tipo == "listar_venta_temporal" || $tipo == "listar_venta_Temporal") {
+if ($tipo == "listar_venta_temporal") {
     $respuesta = array('status' => false, 'msg' => 'fallo el controlador');
     $b_productos = $objVenta->buscarTemporales();
-    if ($b_productos && count($b_productos) > 0) {
-        $respuesta = array('status' => true, 'data' => $b_productos);
-    } else {
-        $respuesta = array('status' => false, 'msg' => 'no se encontraron datos');
-    }
-    echo json_encode($respuesta);
-}
-
-// Devuelve los temporales (usado para calcular subtotal/igv/total en el frontend)
-if ($tipo == "subtotal_temporal") {
-    $respuesta = array('status' => false, 'msg' => 'fallo el controlador');
-    $b_productos = $objVenta->buscarTemporales();
-    if ($b_productos) {
-        $respuesta = array('status' => true, 'data' => $b_productos);
+    if ($b_producto) {
+        $respuesta = array('status' => true, 'data' => $b_producto);
     } else {
         $respuesta = array('status' => false, 'msg' => 'no se encontraron datos');
     }
@@ -58,29 +46,6 @@ if ($tipo=="actualizar_cantidad") {
         $respuesta = array('status' => true, 'msg' => 'success');
     }else {
         $respuesta = array('status' => false, 'msg' => 'Error');
-    }
-    echo json_encode($respuesta);
-}
-if ($tipo == "eliminar_temporal") {
-    $id = $_POST['id'];
-    $respuesta = array('status' => false, 'msg' => 'fallo el controlador');
-    $consulta = $objVenta->eliminarTemporal($id);
-    if ($consulta) {
-        $respuesta = array('status' => true, 'msg' => 'eliminado');
-    } else {
-        $respuesta = array('status' => false, 'msg' => 'Error al eliminar');
-    }
-    echo json_encode($respuesta);
-}
-
-if ($tipo == "realizar_venta") {
-    // Implementación simple: eliminar temporales (simula completar la venta)
-    $respuesta = array('status' => false, 'msg' => 'fallo el controlador');
-    $consulta = $objVenta->eliminarTemporales();
-    if ($consulta) {
-        $respuesta = array('status' => true, 'msg' => 'venta realizada');
-    } else {
-        $respuesta = array('status' => false, 'msg' => 'Error al procesar venta');
     }
     echo json_encode($respuesta);
 }

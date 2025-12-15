@@ -4,8 +4,6 @@
         <div class="card">
             <div class="card-body row">
                 <h5 class="card-title col-md-4">Busqueda de Productos</h5>
-
-                
                 <div class="col-md-6">
                     <input type="text" class="form-control col-md-12"
                         placeholder="buscar productos por nombre o codigó"
@@ -37,7 +35,7 @@
                                 <tr>
                                     <th>Producto</th>
                                     <th>Cantidad</th>
-                                    <th>Precio</th>
+                                    <th>P.Unit</th>
                                     <th>Subtotal</th>
                                     <th></th>
                                 </tr>
@@ -53,7 +51,7 @@
                         <h4>Subtotal : <label id="subtotal_general"></label></h4>
                         <h4>Igv : <label id="igv_general"></label></h4>
                         <h4>Total : <label id="total"></label></h4>
-                        <button class="btn btn-success" onclick="realizar_venta()">Realizar Venta</button>
+                        <button class="btn btn-success">Realizar Venta</button>
                     </div>
                 </div>
             </div>
@@ -68,5 +66,7 @@
         if (event.key == 'Enter'){
             agregar_producto_temporal();
         }
-    })
+    });
+    listar_temporales();
+    act_subt_general();
 </script>
