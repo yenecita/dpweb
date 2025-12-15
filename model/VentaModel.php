@@ -60,6 +60,13 @@ class VentaModel
         return $sql;
     }
     public function listarVentas_Temporal(){
+        $arr_ventas = array();
+        $consulta = "SELECT tv.*, p.nombre FROM temporal_venta tv INNER JOIN producto p ON tv.id_producto = p.id";
+        $sql = $this->conexion->query($consulta);
+        while ($objeto = $sql->fetch_object()) {
+            array_push($arr_ventas, $objeto);
+        }
+        return $arr_ventas;
         
     }
 }
