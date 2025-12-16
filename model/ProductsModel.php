@@ -116,6 +116,7 @@ class ProductsModel
         $resultado = $sql->fetch_object();
         return $resultado->total;
     }
+    
     public function buscarProductoByNombreOrCodigo($dato){
         $arr_productos = array();
         $consulta = "SELECT * FROM producto WHERE codigo LIKE '%$dato%' OR  detalle LIKE '%$dato%'";

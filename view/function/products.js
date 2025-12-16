@@ -433,7 +433,7 @@ async function listar_productos_venta() {
         <p style="text-align:center; margin:0;">Stock: ${producto.stock}</p>
 
         <button class="btn btn-primary mt-2"
-            onclick="agregar_producto_venta(${producto.id})">
+            onclick="agregar_producto_temporal(${producto.id})">
             Agregar
         </button>
     </div>
