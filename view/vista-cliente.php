@@ -6,10 +6,6 @@
 
                 <h5 class="card-title">Busqueda de Productos</h5>
 
-
-
-                <h5 class="card-title col-md-4">Busqueda de Productos</h5>
-
                 <div class="col-md-6">
                     <input type="text" class="form-control col-md-12"
                         placeholder="buscar productos por nombre o codigó"
@@ -60,10 +56,7 @@
                         <h4>Igv : <label id="igv_general"></label></h4>
                         <h4>Total : <label id="total"></label></h4>
 
-                        <button class="btn btn-success" onclick="realizar_venta()" data-bs-toggle="modal" data-bs-target="#exampleModal">Realizar Venta</button>
-
-                        <button class="btn btn-success">Realizar Venta</button>
-
+                        <button class="btn btn-success" onclick="realizarventa()" data-bs-toggle="modal" data-bs-target="#exampleModal">Realizar Venta</button>
                     </div>
                 </div>
             </div>

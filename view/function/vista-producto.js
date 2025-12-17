@@ -33,17 +33,7 @@ async function agregar_producto_temporal(id_product = 0, price = 0, cant = 1) {
     } else {
         cantidad = cant;
     }
-    
-}
-async function agregar_producto_temporal(event) {
-    if (event && event.preventDefault) event.preventDefault();
-    const btn = document.getElementById('btn_agregar_producto');
-    if (btn) btn.disabled = true;
-
-    const id = document.getElementById('id_producto_venta').value;
-    const precio = document.getElementById('producto_precio_venta').value;
-    const cantidad = document.getElementById('producto_cantidad_venta').value;
-
+   
     const datos = new FormData();
     datos.append('id_producto', id);
     datos.append('precio', precio);
@@ -54,46 +44,21 @@ async function agregar_producto_temporal(event) {
             mode: 'cors',
             cache: 'no-cache',
             body: datos
-        });
-        if (!respuesta.ok) {
-            console.log('Error HTTP al agregar producto temporal:', respuesta.status, respuesta.statusText);
-            return;
-        }
-        const text = await respuesta.text();
-        if (!text) {
-            console.log('Respuesta vacía al agregar producto temporal');
-            return;
-        }
-        let json;
-        try {
-            json = JSON.parse(text);
-        } catch (e) {
-            console.log('Respuesta no es JSON al agregar producto temporal:', text);
-            return;
-        }
+          });
+        json = await respuesta.json();
         if (json.status) {
             if (json.msg == "registrado") {
                 alert("el producto fue registrado");
             } else {
                 alert("el producto fue actualizado");
             }
-
-            listar_temporales();
-
         }
         listar_temporales();
 
     } catch (error) {
-
         console.log("error en agregar producto temporal " + error);
-
-        console.log("Error al agregar producto temporal: " + error);
-    } finally {
-        if (btn) btn.disabled = false;
-
     }
 }
-
 async function listar_temporales() {
     try {
 
@@ -113,7 +78,7 @@ async function listar_temporales() {
                        <td><input type="number" id="cant_${t_venta.id}" value="${t_venta.cantidad}" style="width: 60px;" onkeyup="actualizar_subtotal(${t_venta.id}, ${t_venta.precio});" onchange="actualizar_subtotal(${t_venta.id}, ${t_venta.precio});"></td>
                        <td>S/. ${t_venta.precio}</td>
                        <td id="subtotal_${t_venta.id}>"S/. ${t_venta.cantidad * t_venta.precio}</td>
-                       <td><button class="btn btn-danger btn-sm">Eliminar</button></td>
+                       <td><button class="btn btn-danger btn-sm"onclick="eliminar_temporal(${t_venta.id})">Eliminar</button></td>
                    </tr>`
 
             });
@@ -195,33 +160,6 @@ async function buscar_cliente_venta() {
     }
 }
 
-// nuevo: función para eliminar un item temporal
-async function eliminar_temporal(id) {
-    if (!confirm('¿Eliminar este producto?')) return;
-
-    try {
-        const datos = new FormData();
-        datos.append('id', id);
-        let respuesta = await fetch(base_url + 'control/VentaController.php?tipo=eliminar_temporal', {
-
-            method: 'POST',
-            mode: 'cors',
-            cache: 'no-cache',
-            body: datos
-        });
-
-        json = await respuesta.json();
-        if (json.status) {
-            document.getElementById('cliente_nombre').value = json.data.razon_social;
-            document.getElementById('id_cliente_venta').value = json.data.id;
-        }else{
-            alert(json.msg);
-        }
-    } catch (error) {
-        console.log("error al buscar cliente por dni " + error);
-    }
-}
-
 async function registrarventa() {
     let id_cliente = document.getElementById('id_cliente').value;
     let fecha_venta = document.getElementById('fecha_venta').value;
@@ -250,6 +188,27 @@ async function registrarventa() {
         
     }
     
+}
+async function  eliminar_temporal($id){
+    try {
+        const datos = new FormData();
+        datos.append('id', $id);
+        let respuesta = await fetch(base_url + 'control/VentaController.php?tipo=eliminar_temporal', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: datos
+        });
+        json = await respuesta.json();
+        if (json.status) {
+            listar_temporales();
+            act_subt_general();
+        }                       
+    } catch (error) {
+        console.log("error al eliminar producto temporal " + error);
+    }       
+
+
 }
 
 

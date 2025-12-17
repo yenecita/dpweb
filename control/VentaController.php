@@ -92,4 +92,3 @@ if ($tipo=="registrar_venta") {
 
 }
 
-
