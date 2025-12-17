@@ -27,6 +27,7 @@ class VentaModel
     public function actualizarCantidadTemporalByid($id, $cantidad)
     {
         $consulta = "UPDATE temporal_venta SET cantidad='$cantidad' WHERE id='$id'";
+
         $sql = $this->conexion->query($consulta);
         return $sql;
     }
@@ -40,13 +41,15 @@ class VentaModel
         }
         return $arr_temporal;
     }
+   
     public function buscarTemporal($id_producto)
     {
         $consulta = "SELECT * FROM temporal_venta WHERE id_producto='$id_producto'";
         $sql = $this->conexion->query($consulta);
         return $sql->fetch_object();
     }
-     public function eliminarTemporal($id)
+
+    public function eliminarTemporal($id)
     {
         $consulta = "DELETE FROM temporal_venta WHERE id='$id'";
         $sql = $this->conexion->query($consulta);
@@ -58,9 +61,7 @@ class VentaModel
         $sql = $this->conexion->query($consulta);
         return $sql;
     }
-    public function listarVentas_Temporal(){
-
-    }
+    
 
     //---------------------- Logica para registrar venta ---------------------//
     public function buscar_ultima_venta(){
@@ -71,14 +72,29 @@ class VentaModel
     public function registrar_venta($correlativo, $fecha_venta, $id_cliente, $id_vendedor){
         $consulta = "INSERT INTO venta (codigo, fecha_hora, id_cliente, id_vendedor) VALUES ('$correlativo', '$fecha_venta', '$id_cliente', '$id_vendedor')";
         $sql = $this->conexion->query($consulta);
-        if ($sql) {
+        if($sql){
             return $this->conexion->insert_id;
+        }   
+    }
+    public function listarVentas_Temporal(){
+
+        $arr_ventas = array();
+        $consulta = "SELECT tv.*, p.nombre FROM temporal_venta tv INNER JOIN producto p ON tv.id_producto = p.id";
+
+        $sql = $this->conexion->query($consulta);
+        while ($objeto = $sql->fetch_object()) {
+            array_push($arr_ventas, $objeto);
         }
+
         return 0;
     }
     public function registrar_detalle_venta($id_venta, $id_producto, $precio, $cantidad){
         $consulta = "INSERT INTO detalle_venta (id_venta, id_producto, precio, cantidad) VALUES ('$id_venta', '$id_producto', '$precio', '$cantidad')";
         $sql = $this->conexion->query($consulta);
         return $sql;
+
+        return $arr_ventas;
+
     }
+   
 }

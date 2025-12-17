@@ -1,4 +1,3 @@
-
 let productos_venta = {};
 let id = 2;
 let id2 = 4;
@@ -17,6 +16,7 @@ productos_venta[id] = producto;
 productos_venta[id2] = producto2;
 console.log(productos_venta);
 
+
 async function agregar_producto_temporal(id_product = 0, price = 0, cant = 1) {
     if (id_product == 0) {
         id = document.getElementById('id_producto_venta').value;
@@ -34,6 +34,16 @@ async function agregar_producto_temporal(id_product = 0, price = 0, cant = 1) {
         cantidad = cant;
     }
     
+}
+async function agregar_producto_temporal(event) {
+    if (event && event.preventDefault) event.preventDefault();
+    const btn = document.getElementById('btn_agregar_producto');
+    if (btn) btn.disabled = true;
+
+    const id = document.getElementById('id_producto_venta').value;
+    const precio = document.getElementById('producto_precio_venta').value;
+    const cantidad = document.getElementById('producto_cantidad_venta').value;
+
     const datos = new FormData();
     datos.append('id_producto', id);
     datos.append('precio', precio);
@@ -45,23 +55,48 @@ async function agregar_producto_temporal(id_product = 0, price = 0, cant = 1) {
             cache: 'no-cache',
             body: datos
         });
-        json = await respuesta.json();
+        if (!respuesta.ok) {
+            console.log('Error HTTP al agregar producto temporal:', respuesta.status, respuesta.statusText);
+            return;
+        }
+        const text = await respuesta.text();
+        if (!text) {
+            console.log('Respuesta vacía al agregar producto temporal');
+            return;
+        }
+        let json;
+        try {
+            json = JSON.parse(text);
+        } catch (e) {
+            console.log('Respuesta no es JSON al agregar producto temporal:', text);
+            return;
+        }
         if (json.status) {
             if (json.msg == "registrado") {
                 alert("el producto fue registrado");
             } else {
                 alert("el producto fue actualizado");
             }
+
+            listar_temporales();
+
         }
         listar_temporales();
 
     } catch (error) {
+
         console.log("error en agregar producto temporal " + error);
+
+        console.log("Error al agregar producto temporal: " + error);
+    } finally {
+        if (btn) btn.disabled = false;
+
     }
 }
 
 async function listar_temporales() {
     try {
+
         let respuesta = await fetch(base_url + 'control/VentaController.php?tipo=listar_venta_temporal', {
             method: 'POST',
             mode: 'cors',
@@ -89,12 +124,11 @@ async function listar_temporales() {
         console.log("Error al cargar  producto temporal" + error);
     }
 }
-
 async function actualizar_subtotal(id, precio) {
     let cantidad = document.getElementById('cant_' + id).value;
     try {
         const datos = new FormData();
-        datos.append('id' , id);
+        datos.append('id', id);
         datos.append('cantidad', cantidad);
         let respuesta = await fetch(base_url + 'control/VentaController.php?tipo=actualizar_cantidad', {
             method: 'POST',
@@ -105,14 +139,14 @@ async function actualizar_subtotal(id, precio) {
         json = await respuesta.json();
         if (json.status) {
             subtotal = cantidad * precio;
-            document.getElementById('subtotal_'+id).innerHTML = 'S/. '+subtotal ;                                                        
+            document.getElementById('subtotal_' + id).innerHTML = 'S/. ' + subtotal;
+            act_subt_general();
         }
-
     } catch (error) {
-        console.log("Error al cargar  producto temporal" + error);
+        console.log("error al actualizar cantidad : " + error);
     }
+}
 
-} 
 async function act_subt_general() {
     try {
         let respuesta = await fetch(base_url + 'control/VentaController.php?tipo=listar_venta_temporal', {
@@ -124,18 +158,19 @@ async function act_subt_general() {
         if (json.status) {
             subtotal_general = 0;
             json.data.forEach(t_venta => {
-                subtotal_general += (t_venta.precio * t_venta.cantidad);
+                subtotal_general += parseFloat(t_venta.precio * t_venta.cantidad);
             });
-            igv = subtotal_general*0.18;
-            total = subtotal_general+igv;
-            document.getElementById('subtotal_general').innerHTML = 'S/. '+subtotal_general;
-            document.getElementById('igv_general').innerHTML = 'S/. '+igv;
-            document.getElementById('total').innerHTML = 'S/. '+total;
+            igv = parseFloat(subtotal_general * 0.18).toFixed(2);
+            total = (parseFloat(subtotal_general) + parseFloat(igv)).toFixed(2);
+            document.getElementById('subtotal_general').innerHTML = 'S/. ' + subtotal_general.toFixed(2);
+            document.getElementById('igv_general').innerHTML = 'S/. ' + igv;
+            document.getElementById('total').innerHTML = 'S/. ' + total;
         }
     } catch (error) {
         console.log("error al cargar productos temporales " + error);
     }
 }
+
 
 async function buscar_cliente_venta() {
     let dni = document.getElementById('cliente_dni').value;
@@ -148,6 +183,33 @@ async function buscar_cliente_venta() {
             cache: 'no-cache',
             body: datos
         });
+        json = await respuesta.json();
+        if (json.status) {
+            document.getElementById('cliente_nombre').value = json.data.razon_social;
+            document.getElementById('id_cliente_venta').value = json.data.id;
+        } else {
+            alert(json.msg);
+        }
+    } catch (error) {
+        console.log("error al buscar cliente por dni " + error);
+    }
+}
+
+// nuevo: función para eliminar un item temporal
+async function eliminar_temporal(id) {
+    if (!confirm('¿Eliminar este producto?')) return;
+
+    try {
+        const datos = new FormData();
+        datos.append('id', id);
+        let respuesta = await fetch(base_url + 'control/VentaController.php?tipo=eliminar_temporal', {
+
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: datos
+        });
+
         json = await respuesta.json();
         if (json.status) {
             document.getElementById('cliente_nombre').value = json.data.razon_social;
@@ -189,11 +251,6 @@ async function registrarventa() {
     }
     
 }
-
-
-
-
-
 
 
 

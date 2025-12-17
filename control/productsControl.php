@@ -180,8 +180,6 @@ if ($tipo == "actualizar") {
     echo json_encode($arrResponse);
 }
 
-
-
 if ($tipo == "buscar_producto_venta") {
     $dato = $_POST['dato'];
     $respuesta = array('status' => false, 'msg' => 'fallo el controlador');

@@ -77,7 +77,7 @@ async function registrarProveedor() {
 }
 
 
-// Mostrar proveedores
+// MOSTRAR PROVEEDORES
 async function view_proveedor() {
     try {
         let respuesta = await fetch(base_url + 'control/UsuarioController.php?tipo=listar_proveedores', {
@@ -123,7 +123,8 @@ if (document.getElementById('content_proveedor')) {
     view_proveedor();
 }
 
-//Editar Proveedor
+// EDITAR PROVEEDOR
+
 async function edit_proveedor() {
     try {
         // Obtener el ID del campo oculto (viene de PHP)
