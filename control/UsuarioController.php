@@ -226,17 +226,20 @@ if ($tipo == "eliminar") {
     echo json_encode($arrResponse);
 }
 
-if ($tipo == "verificar_nro_identidad") {
-    $nro_identidad = $_POST['nro_identidad'];
-    $id_persona = $_POST['id_persona'];
-    $existeOtro = $objPersona->existePersonaOtro($nro_identidad, $id_persona);
-    if ($existeOtro > 0) {
-        $respuesta = array('status' => false, 'msg' => 'Error, nro de documento ya existe para otro proveedor');
+if ($tipo == "ver_client") {
+    $usuarios = $objPersona->verClient();
+    if (count($usuarios)) {
+        $respuesta = array('status' => true, 'msg' => '', 'data' => $usuarios);
     } else {
-        $respuesta = array('status' => true, 'msg' => 'Nro de documento disponible');
+        $respuesta = array('status' => false, 'msg' => 'No hay clientes');
     }
     echo json_encode($respuesta);
+    exit;
 }
+
+// Si no coincide ningún tipo
+echo json_encode(['status' => false, 'msg' => 'Tipo de operación no válida']);
+exit;
 
 if ($tipo == "ver_client") {
     $usuarios = $objPersona->verClient();
@@ -247,4 +250,5 @@ if ($tipo == "ver_client") {
     }
     echo json_encode($respuesta);
 }
+
 
