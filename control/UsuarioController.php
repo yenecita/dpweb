@@ -237,6 +237,21 @@ if ($tipo == "ver_client") {
     exit;
 }
 
+if ($tipo == "buscar_por_dni") {
+    $dni = $_POST['dni'] ?? '';
+    if ($dni == '') {
+        echo json_encode(['status' => false, 'msg' => 'DNI vacío']);
+        exit;
+    }
+    $persona = $objPersona->buscarPersonaPorNroIdentidad($dni);
+    if ($persona) {
+        echo json_encode(['status' => true, 'data' => $persona]);
+    } else {
+        echo json_encode(['status' => false, 'msg' => 'Cliente no encontrado']);
+    }
+    exit;
+}
+
 // Si no coincide ningún tipo
 echo json_encode(['status' => false, 'msg' => 'Tipo de operación no válida']);
 exit;

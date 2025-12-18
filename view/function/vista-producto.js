@@ -161,7 +161,7 @@ async function buscar_cliente_venta() {
 }
 
 async function registrarventa() {
-    let id_cliente = document.getElementById('id_cliente').value;
+    let id_cliente = document.getElementById('id_cliente_venta').value;
     let fecha_venta = document.getElementById('fecha_venta').value;
     if (id_cliente == "" || fecha_venta == "") {
         return alert("todos los campos son obligatorios");
@@ -170,6 +170,7 @@ async function registrarventa() {
         const datos = new FormData();
         datos.append('id_cliente', id_cliente);
         datos.append('fecha_venta', fecha_venta);
+        // id_vendedor can be omitted — backend will use session if available
         let respuesta = await fetch(base_url + 'control/VentaController.php?tipo=registrar_venta', {
             method: 'POST',
             mode: 'cors',

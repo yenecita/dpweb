@@ -62,9 +62,10 @@ if($tipo=="actualizar_cantidad"){
 }
 if ($tipo=="registrar_venta") {
     session_start();
-    $id_cliente = $_POST['id_cliente'];
-    $fecha_venta = $_POST['fecha_venta'];
-    $id_vendedor = $_POST['id_vendedor'];
+    $id_cliente = $_POST['id_cliente'] ?? null;
+    $fecha_venta = $_POST['fecha_venta'] ?? null;
+    // prefer POST id_vendedor, otherwise try session ventas_id
+    $id_vendedor = $_POST['id_vendedor'] ?? ($_SESSION['ventas_id'] ?? null);
     $ultima_venta = $objVenta->buscar_ultima_venta();
     //logica para registrar venta
     $respuesta = array('status' => false, 'msg' => 'fallo el controlador');
@@ -74,6 +75,12 @@ if ($tipo=="registrar_venta") {
     } else {
         $correlativo = 1;
     }
+    // validar datos obligatorios
+    if (empty($id_cliente) || empty($fecha_venta) || empty($id_vendedor)) {
+        echo json_encode(['status' => false, 'msg' => 'Faltan datos para registrar venta']);
+        exit;
+    }
+
     //registrar venta oficial
     $venta = $objVenta->registrar_venta($correlativo, $fecha_venta, $id_cliente, $id_vendedor);
     if ($venta) {
