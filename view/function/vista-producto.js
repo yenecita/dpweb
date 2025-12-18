@@ -189,27 +189,33 @@ async function registrarventa() {
     }
     
 }
-async function  eliminar_temporal($id){
+async function eliminar_temporal($id) {
     try {
         const datos = new FormData();
         datos.append('id', $id);
-        let respuesta = await fetch(base_url + 'control/VentaController.php?tipo=eliminar_temporal', {
-            method: 'POST',
-            mode: 'cors',
-            cache: 'no-cache',
-            body: datos
-        });
-        json = await respuesta.json();
-        if (json.status) {
-            listar_temporales();
-            act_subt_general();
-        }                       
+
+        let respuesta = await fetch(
+            base_url + 'control/VentaController.php?tipo=eliminar_temporal',
+            {
+                method: 'POST',
+                body: datos
+            }
+        );
+
+        console.log('status:', respuesta.status);
+
+        let texto = await respuesta.text();
+        console.log('respuesta backend:', texto);
+
+        // fuerza actualización aunque no haya JSON
+        listar_temporales();
+        act_subt_general();
+
     } catch (error) {
-        console.log("error al eliminar producto temporal " + error);
-    }       
-
-
+        console.log("error al eliminar producto temporal", error);
+    }
 }
+
 
 
 

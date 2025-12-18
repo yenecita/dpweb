@@ -91,4 +91,21 @@ if ($tipo=="registrar_venta") {
     echo json_encode($respuesta);
 
 }
+if ($tipo == "eliminar_temporal") {
+
+    $id = $_POST['id'];
+    $respuesta = array('status' => false, 'msg' => 'fallo al eliminar');
+
+    $eliminar = $objVenta->eliminarTemporal($id);
+
+    if ($eliminar) {
+        $respuesta = array('status' => true, 'msg' => 'producto eliminado');
+    } else {
+        $respuesta = array('status' => false, 'msg' => 'no se pudo eliminar');
+    }
+
+    echo json_encode($respuesta);
+    exit;
+}
+
 
